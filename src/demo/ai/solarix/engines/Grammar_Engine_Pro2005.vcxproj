@@ -31,37 +31,37 @@
     <ProjectGuid>{BB405659-6EA6-4D1E-9B36-5FB0C5FFFD0D}</ProjectGuid>
     <RootNamespace>Grammar_Engine_Pro</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-MySQL|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-MySQL|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -96,33 +96,33 @@
     <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(TMP)\Grammar_Engine\Debug_Pro\</OutDir>
-    <IntDir>$(TMP)\Grammar_Engine\Debug_Pro\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\..\..\obj\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(TMP)\Grammar_Engine\Debug-Pro64\</OutDir>
-    <IntDir>$(TMP)\Grammar_Engine\Debug-Pro64\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\..\..\obj\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(TMP)\Grammar_Engine\Release_Pro\</OutDir>
-    <IntDir>$(TMP)\Grammar_Engine\Release_Pro\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\..\..\obj\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(TMP)\Grammar_Engine\Release-Pro64\</OutDir>
-    <IntDir>$(TMP)\Grammar_Engine\Release-Pro64\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\..\..\obj\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-MySQL|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir>$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\..\..\obj\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-MySQL|x64'">
-    <OutDir>$(TMP)\Grammar_Engine\Release64-MySQL\</OutDir>
-    <IntDir>$(TMP)\Grammar_Engine\Release64-MySQL\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\..\..\obj\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -133,7 +133,7 @@
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;_CONSOLE;BOOST_ALL_NO_LIB;LEM_OFMT_MICROSOL;DLL_EXPORTS;SOL_LOADTXT;SOL_SAVETXT;SOL_CAA;SOL_LOADBIN;SOLARIX_PRO;SOLARIX_PREMIUM;GM_PHRASE_GENERATOR;GM_THESAURUS;SOLARIX_GRAMMAR_ENGINE;GM_STEMMER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;_CONSOLE;BOOST_ALL_NO_LIB;LEM_OFMT_MICROSOL;DLL_EXPORTS;SOL_LOADTXT;SOL_SAVETXT;SOL_CAA;SOL_LOADBIN;SOLARIX_PRO;SOLARIX_PREMIUM;GM_PHRASE_GENERATOR;GM_THESAURUS;SOLARIX_GRAMMAR_ENGINE;GM_STEMMER;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -170,8 +170,8 @@
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;_CONSOLE;BOOST_ALL_NO_LIB;LEM_OFMT_MICROSOL;DLL_EXPORTS;SOL_LOADTXT;SOL_SAVETXT;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOL_SQLITE_NGRAMS;GM_THESAURUS;SOLARIX_GRAMMAR_ENGINE;GM_STEMMER;SOL_GM_ENGLISH;BOOST_THREAD_BUILD_LIB;SOL_CRF_MODEL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\include;$(LEM_PATH)\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;_CONSOLE;BOOST_ALL_NO_LIB;DLL_EXPORTS;SOL_LOADTXT;SOL_SAVETXT;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOL_SQLITE_NGRAMS;GM_THESAURUS;SOLARIX_GRAMMAR_ENGINE;GM_STEMMER;SOL_GM_ENGLISH;BOOST_THREAD_BUILD_LIB;SOL_CRF_MODEL;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -185,10 +185,10 @@
       <DisableSpecificWarnings>4025;4995;4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <OutputFile>$(LEM_PATH)/lib64/solarix_grammar_engined.dll</OutputFile>
+      <OutputFile>$(OutDir)solarix_grammar_engine.dll</OutputFile>
       <AdditionalLibraryDirectories>$(LEM_PATH)\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>gdi32.lib;winspool.lib;comdlg32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ModuleDefinitionFile />
+      <ModuleDefinitionFile>solarix_grammar_engine.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)Grammar_Engine.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -196,6 +196,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>$(LEM_PATH)/lib64/solarix_grammar_engined.lib</ImportLibrary>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>libcrf.lib;cqdb.lib;libLBFGS.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -206,7 +207,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;$(LEM_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WINDOWS;NDEBUG;_CONSOLE;BOOST_ALL_NO_LIB;DLL_EXPORTS;SOL_LOADTXT;SOL_SAVETXT;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOLARIX_GRAMMAR_ENGINE;GM_THESAURUS;GM_STEMMER;SOL_SQLITE_NGRAMS;SOL_GM_ENGLISH;BOOST_THREAD_BUILD_LIB;SOL_CRF_MODEL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;NDEBUG;_CONSOLE;BOOST_ALL_NO_LIB;DLL_EXPORTS;SOL_LOADTXT;SOL_SAVETXT;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOLARIX_GRAMMAR_ENGINE;GM_THESAURUS;GM_STEMMER;SOL_SQLITE_NGRAMS;SOL_GM_ENGLISH;BOOST_THREAD_BUILD_LIB;SOL_CRF_MODEL;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -220,11 +221,11 @@
       <DisableSpecificWarnings>4025;4995;4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <OutputFile>$(LEM_PATH)/lib/solarix_grammar_engine.dll</OutputFile>
+      <OutputFile>$(OutDir)solarix_grammar_engine.dll</OutputFile>
       <AdditionalLibraryDirectories>$(LEM_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>gdi32.lib;winspool.lib;comdlg32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>solarix_grammar_engine.def</ModuleDefinitionFile>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -247,7 +248,7 @@
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;$(LEM_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WINDOWS;NDEBUG;_CONSOLE;BOOST_ALL_NO_LIB;DLL_EXPORTS;SOL_LOADTXT;SOL_SAVETXT;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOLARIX_GRAMMAR_ENGINE;GM_THESAURUS;GM_STEMMER;SOL_SQLITE_NGRAMS;SOL_GM_ENGLISH;BOOST_THREAD_BUILD_LIB;SOL_CRF_MODEL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;NDEBUG;_CONSOLE;BOOST_ALL_NO_LIB;DLL_EXPORTS;SOL_LOADTXT;SOL_SAVETXT;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOLARIX_GRAMMAR_ENGINE;GM_THESAURUS;GM_STEMMER;SOL_SQLITE_NGRAMS;SOL_GM_ENGLISH;BOOST_THREAD_BUILD_LIB;SOL_CRF_MODEL;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -276,10 +277,10 @@
       <ImportLibrary>$(LEM_PATH)/lib64/Solarix_Grammar_Engine.lib</ImportLibrary>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
-    <PostBuildEvent>
+    <!-- <PostBuildEvent>
       <Command>copy E:\tmp\Grammar_Engine\Release-Pro64\solarix_grammar_engine.dll  $(LEM_PATH)\lib64
 copy E:\tmp\Grammar_Engine\Release-Pro64\solarix_grammar_engine.dll  $(LEM_PATH)\exe64</Command>
-    </PostBuildEvent>
+    </PostBuildEvent> -->
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-MySQL|Win32'">
     <ClCompile>
@@ -359,27 +360,27 @@ copy E:\tmp\Grammar_Engine\Release-Pro64\solarix_grammar_engine.dll  $(LEM_PATH)
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\ai\la\PatternNGramTreeScorer.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\cpp_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\cregex.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\c_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\fileiter.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\icu.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\instances.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\posix_api.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex_debug.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex_raw_buffer.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex_traits_defaults.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\static_mutex.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\usinstances.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\w32_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\wc_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\wide_posix_api.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\winstances.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\system\src\error_code.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\thread.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\tss_dll.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\tss_pe.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\cpp_regex_traits.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\cregex.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\c_regex_traits.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\fileiter.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\icu.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\instances.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\posix_api.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\regex.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\regex_debug.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\regex_raw_buffer.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\regex_traits_defaults.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\static_mutex.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\usinstances.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\w32_regex_traits.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\wc_regex_traits.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\wide_posix_api.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\regex\src\winstances.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\system\src\error_code.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\thread\src\win32\thread.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\thread\src\win32\tss_dll.cpp" />
+    <ClCompile Include="c:\Projects\boost\libs\thread\src\win32\tss_pe.cpp" />
     <ClCompile Include="EngineDllMain.cpp" />
     <ClCompile Include="errors_api.cpp" />
     <ClCompile Include="GrammarEngineHolder.cpp" />

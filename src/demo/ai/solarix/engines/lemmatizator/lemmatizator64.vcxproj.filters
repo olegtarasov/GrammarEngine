@@ -363,17 +363,17 @@
     <ClCompile Include="..\..\..\..\..\math\lem_imat.cpp">
       <Filter>Source Files\Lem\Math</Filter>
     </ClCompile>
-    <ClCompile Include="c:\Projects\boost\libs\system\src\error_code.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="E:\boost.1.60\libs\system\src\error_code.cpp">
+      <Filter>Source Files\boost\system</Filter>
     </ClCompile>
-    <ClCompile Include="c:\Projects\boost\libs\thread\src\win32\thread.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\thread.cpp">
+      <Filter>Source Files\boost\thread</Filter>
     </ClCompile>
-    <ClCompile Include="c:\Projects\boost\libs\thread\src\win32\tss_dll.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\tss_dll.cpp">
+      <Filter>Source Files\boost\thread</Filter>
     </ClCompile>
-    <ClCompile Include="c:\Projects\boost\libs\thread\src\win32\tss_pe.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\tss_pe.cpp">
+      <Filter>Source Files\boost\thread</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

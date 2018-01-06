@@ -75,7 +75,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4025;4995;4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\include;$(LEM_PATH)\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;%(AdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(LEM_PATH)\include;$(LEM_PATH)\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;%(AdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)solarix_grammar_engined.dll</OutputFile>
@@ -116,7 +116,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4025;4995;4996;4103;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <BrowseInformation>true</BrowseInformation>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\include;$(LEM_PATH)\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(LEM_PATH)\include;$(LEM_PATH)\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libcrf.lib;cqdb.lib;libLBFGS.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -133,34 +133,9 @@
       <TargetMachine>MachineX64</TargetMachine>
       <AdditionalLibraryDirectories>$(LEM_PATH)\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <!-- <PostBuildEvent>
-      <Command>copy E:\tmp\Grammar_Engine\Release-Pro64\solarix_grammar_engine.dll  $(LEM_PATH)\lib64
-copy E:\tmp\Grammar_Engine\Release-Pro64\solarix_grammar_engine.dll  $(LEM_PATH)\exe64</Command>
-    </PostBuildEvent> -->
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\ai\la\PatternNGramTreeScorer.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\cpp_regex_traits.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\cregex.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\c_regex_traits.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\fileiter.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\icu.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\instances.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\posix_api.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\regex.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\regex_debug.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\regex_raw_buffer.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\regex_traits_defaults.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\static_mutex.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\usinstances.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\w32_regex_traits.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\wc_regex_traits.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\wide_posix_api.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\regex\src\winstances.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\system\src\error_code.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\thread\src\win32\thread.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\thread\src\win32\tss_dll.cpp" />
-    <ClCompile Include="c:\Projects\boost\libs\thread\src\win32\tss_pe.cpp" />
     <ClCompile Include="EngineDllMain.cpp" />
     <ClCompile Include="errors_api.cpp" />
     <ClCompile Include="GrammarEngineHolder.cpp" />

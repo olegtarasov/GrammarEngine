@@ -124,9 +124,9 @@ copy $(LEM_PATH)\lib\sqlited.dll $(TargetDir)
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>solarix_grammar_engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>solarix_grammar_engined.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)SimpleGREN.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(LEM_PATH)\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>c:\Projects\GrammarEngine\bin\GrammarEngine\x64\Debug%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)SimpleGREN.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>

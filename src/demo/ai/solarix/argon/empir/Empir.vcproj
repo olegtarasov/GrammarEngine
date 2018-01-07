@@ -113,7 +113,7 @@ copy $(LEM_PATH)\lib\firebird\icudt30.dll $(TMP)\empir\debug
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="WSock32.lib mpr.lib unicows.lib version.lib"
-				AdditionalDependencies="sqlite.lib"
+				AdditionalDependencies="sqlite3.lib"
 				OutputFile="$(LEM_PATH)/exe/Empirika.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(LEM_PATH)\lib;$(LEM_PATH)\lib\firebird"

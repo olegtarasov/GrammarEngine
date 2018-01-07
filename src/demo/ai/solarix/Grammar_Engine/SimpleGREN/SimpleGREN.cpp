@@ -231,6 +231,6 @@ int main( int argc, char *argv[] )
 
  sol_DeleteGrammarEngine(hEngine); // http://www.solarix.ru/api/sol_DeleteGrammarEngine.shtml
 
- return 0;
+ return 1;
 }
 

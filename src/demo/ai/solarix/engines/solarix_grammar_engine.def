@@ -235,3 +235,13 @@ sol_AddBeginMarker
 sol_AddEndMarker
 sol_AddNodeToLinkage
 sol_CreateTreeNodeW
+sol_TokenizeFormsW
+sol_TokenizeFormsA
+sol_TokenizeForms8
+sol_CountTokens
+sol_GetTokenStringLen
+sol_GetTokenStringW
+sol_GetTokenStringA
+sol_GetTokenString8
+sol_GetTokenEntries
+sol_DeleteTokens

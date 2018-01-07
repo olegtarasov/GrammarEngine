@@ -227,7 +227,7 @@ copy $(LEM_PATH)\lib\firebird\icudt30.dll $(TMP)\empir\debug
     </ClCompile>
     <Link>
       <AdditionalOptions>WSock32.lib mpr.lib unicows.lib version.lib %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>sqlite.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(LEM_PATH)/exe/Empirika.exe</OutputFile>
       <AdditionalLibraryDirectories>$(LEM_PATH)\lib;$(LEM_PATH)\lib\firebird;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>

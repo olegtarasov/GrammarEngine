@@ -15,9 +15,9 @@ using namespace Solarix;
 
 #if defined(LEM_MSC) && _MSC_VER>=1300 && defined(LEM_WINDOWS)
 #if LEM_DEBUGGING==1
- # pragma comment ( lib, "sqlite.lib" )
+ # pragma comment ( lib, "sqlite3.lib" )
 #else
- # pragma comment ( lib, "sqlite.lib" )
+ # pragma comment ( lib, "sqlite3.lib" )
 #endif
 #endif
 

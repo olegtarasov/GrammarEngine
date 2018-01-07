@@ -1,0 +1,6 @@
+[submodule "src/depends/liblbfgs"]
+	path = src/depends/liblbfgs
+	url = https://github.com/olegtarasov/liblbfgs.git
+[submodule "src/depends/crfsuite"]
+	path = src/depends/crfsuite
+	url = https://github.com/olegtarasov/crfsuite.git

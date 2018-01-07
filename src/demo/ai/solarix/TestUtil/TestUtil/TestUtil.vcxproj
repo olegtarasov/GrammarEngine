@@ -74,6 +74,9 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)..\..\..\..\..\..\bin\GrammarEngine\$(Platform)\$(Configuration)\*.dll" "$(TargetDir)" /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

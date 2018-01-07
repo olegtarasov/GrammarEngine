@@ -3,7 +3,7 @@
 
  #include <lem/ufstring.h>
  #include <lem/ucstring.h>
- #include <lem/sqlite/sqlite3.h>
+ #include <sqlite3.h>
 
  namespace lem
  {

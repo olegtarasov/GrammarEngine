@@ -12,7 +12,7 @@
         <copyright>Elijah Koziev</copyright>
     </metadata>
     <files>
-        <file src="..\..\..\..\..\bin\GrammarEngine\x64\Release\solarix_grammar_engine.dll" target="content\Resources\solarix_grammar_engine.dll" />
-        <file src="..\..\..\..\lib64\sqlite.dll" target="content\Resources\sqlite.dll" />
+        <file src="..\..\bin\GrammarEngine\x64\Release\solarix_grammar_engine.dll" target="content\Resources\solarix_grammar_engine.dll" />
+        <file src="..\lib64\sqlite.dll" target="content\Resources\sqlite.dll" />
     </files>
 </package>

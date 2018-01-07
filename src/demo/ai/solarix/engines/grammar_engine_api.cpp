@@ -4702,9 +4702,165 @@ GREN_API(HGREN_STR) sol_Tokenize8(HGREN hEngine, const char *SentenceUtf8, int L
     return sol_TokenizeW(hEngine, lem::from_utf8(SentenceUtf8).c_str(), LanguageID);
 }
 
+GREN_API(HGREN_SENTENCE) sol_TokenizeFormsW(HGREN hEngine, const wchar_t *Sentence, int LanguageID)
+{
+    if (hEngine == NULL || !HandleEngine(hEngine)->ok || Sentence == NULL)
+        return NULL;
+
+#if defined SOL_CAA && !defined SOL_NO_AA
+    std::auto_ptr<Solarix::Sentence> sent(new Solarix::Sentence);
+
+    DEMO_SINGLE_THREAD(hEngine)
+
+        try
+    {
+        lem::UFString sentence(Sentence);
+
+        sent->Parse(sentence, false, HandleEngine(hEngine)->dict.get(), LanguageID, NULL, true);
+        /*for (int i = 0; i < CastSizeToInt(sent.size()); ++i)
+            list->list.push_back(sent.GetWord(i));*/
+
+        return sent.release();
+    }
+    CATCH_API(hEngine)
+#endif
+
+        return NULL;
+}
 
 
+GREN_API(HGREN_SENTENCE) sol_TokenizeFormsA(HGREN hEngine, const char *Sentence, int LanguageID)
+{
+    return sol_TokenizeFormsW(hEngine, to_unicode(Sentence).c_str(), LanguageID);
+}
 
+GREN_API(HGREN_SENTENCE) sol_TokenizeForms8(HGREN hEngine, const char *SentenceUtf8, int LanguageID)
+{
+    return sol_TokenizeFormsW(hEngine, lem::from_utf8(SentenceUtf8).c_str(), LanguageID);
+}
+
+GREN_API(int) sol_CountTokens(HGREN_SENTENCE hSentence)
+{
+    if (hSentence == NULL)
+        return 0;
+
+    try
+    {
+        return CastSizeToInt(HandleSentence(hSentence)->size());
+    }
+    catch (...)
+    {
+        return -2;
+    }
+}
+
+GREN_API(int) sol_GetTokenStringLen(HGREN_SENTENCE hSentence, int i)
+{
+    if (hSentence == NULL)
+        return -1;
+
+    try
+    {
+        return HandleSentence(hSentence)->GetWord(i).length();
+    }
+    catch (...)
+    {
+        return -2;
+    }
+}
+
+GREN_API(int) sol_GetTokenStringW( HGREN_SENTENCE hSentence, int i, wchar_t *Res)
+{
+    if (hSentence == NULL || Res == NULL)
+        return -1;
+
+    try
+    {
+        *Res = 0;
+        wcscpy(Res, HandleSentence(hSentence)->GetWord(i).c_str());
+        return 0;
+    }
+    catch (...)
+    {
+        return -2;
+    }
+}
+
+
+GREN_API(int) sol_GetTokenStringA( HGREN_SENTENCE hSentence, int i, char *Res)
+{
+    if (hSentence == NULL || Res == NULL)
+        return -1;
+
+    try
+    {
+        *Res = 0;
+        strcpy(Res, lem::to_ascii(HandleSentence(hSentence)->GetWord(i).c_str()).c_str());
+        return 0;
+    }
+    catch (...)
+    {
+        return -2;
+    }
+}
+
+GREN_API(int) sol_GetTokenString8( HGREN_SENTENCE hSentence, int i, char *ResUtf8)
+{
+    if (hSentence == NULL || ResUtf8 == NULL)
+        return -1;
+
+    try
+    {
+        *ResUtf8 = 0;
+        strcpy(ResUtf8, lem::to_utf8(HandleSentence(hSentence)->GetWord(i).c_str()).c_str());
+        return 0;
+    }
+    catch (...)
+    {
+        return -2;
+    }
+}
+
+GREN_API(int) sol_GetTokenEntries( HGREN_SENTENCE hSentence, int* buffer, int size )
+{
+	if (hSentence == NULL || buffer == NULL || size == 0)
+        return -1;
+
+	try
+    {
+		Solarix::Sentence* sentence = HandleSentence(hSentence);
+		if (size < sentence->size())
+		{
+			return -1;
+		}
+
+		for (int i = 0; i < sentence->size(); ++i)
+		{
+			buffer[i] = sentence->GetEntryKey(i);
+		}
+
+        return 0;
+    }
+    catch (...)
+    {
+        return -2;
+    }
+}
+
+GREN_API(int) sol_DeleteTokens( HGREN_SENTENCE hSentence)
+{
+    try
+    {
+        if (hSentence != NULL)
+            delete HandleSentence(hSentence);
+
+        return 0;
+    }
+    catch (...)
+    {
+        return -2;
+    }
+}
 
 GREN_API(HGREN_SBROKER) sol_CreateSentenceBroker(
     HGREN hEngine,

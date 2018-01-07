@@ -4,7 +4,7 @@
 // (c) Koziev Elijah
 //
 // Content:
-// Класс Sentence - предложение как список слов.
+// РљР»Р°СЃСЃ Sentence - РїСЂРµРґР»РѕР¶РµРЅРёРµ РєР°Рє СЃРїРёСЃРѕРє СЃР»РѕРІ.
 // -----------------------------------------------------------------------------
 //
 // CD->24.10.1997
@@ -66,14 +66,15 @@ void Sentence::AddWord(const lem::UCString & word)
 
 
 // ***********************************
-// Разбиваем предложение на слова.
+// Р Р°Р·Р±РёРІР°РµРј РїСЂРµРґР»РѕР¶РµРЅРёРµ РЅР° СЃР»РѕРІР°.
 // ***********************************
 void Sentence::Parse(
 	const lem::UFString & str_buffer,
 	bool Pretokenized,
 	Dictionary * dict,
 	int _id_language,
-	TrTrace * trace
+	TrTrace * trace,
+	bool recognizeWordForms
 )
 {
 	org_phrase = str_buffer;
@@ -103,7 +104,7 @@ void Sentence::Parse(
 			}
 		}
 
-		// Последнее слово терминируется концом строки
+		// РџРѕСЃР»РµРґРЅРµРµ СЃР»РѕРІРѕ С‚РµСЂРјРёРЅРёСЂСѓРµС‚СЃСЏ РєРѕРЅС†РѕРј СЃС‚СЂРѕРєРё
 		if (!word.empty())
 		{
 			AddWord(word);
@@ -119,7 +120,7 @@ void Sentence::Parse(
 
 		if (params.LanguageUnknown())
 		{
-			// Язык предложения не задан явно, определим его на основе статистических критериев.
+			// РЇР·С‹Рє РїСЂРµРґР»РѕР¶РµРЅРёСЏ РЅРµ Р·Р°РґР°РЅ СЏРІРЅРѕ, РѕРїСЂРµРґРµР»РёРј РµРіРѕ РЅР° РѕСЃРЅРѕРІРµ СЃС‚Р°С‚РёСЃС‚РёС‡РµСЃРєРёС… РєСЂРёС‚РµСЂРёРµРІ.
 			const int id_language = dict->GetLexAuto().GuessLanguage(str_buffer);
 
 			if (id_language == UNKNOWN)
@@ -137,7 +138,7 @@ void Sentence::Parse(
 			}
 		}
 
-		params.RecognizeWordforms = false;
+		params.RecognizeWordforms = recognizeWordForms;
 
 		WrittenTextLexer lexer(str_buffer, params, dict, trace);
 		lem::MCollect<const LexerTextPos*> ends;
@@ -153,6 +154,7 @@ void Sentence::Parse(
 				SentenceWord * word = new SentenceWord();
 				word->word = *inverted_path[i]->GetWordform()->GetName();
 				word->normalized_word = *inverted_path[i]->GetWordform()->GetNormalized();
+				word->entry_key = inverted_path[i]->GetWordform()->GetEntryKey();
 				words.push_back(word);
 			}
 		}
@@ -169,7 +171,7 @@ void Sentence::Parse(
 	{
 		if (id_language == UNKNOWN)
 		{
-			// Попробуем определить язык по статистическим критериям.
+			// РџРѕРїСЂРѕР±СѓРµРј РѕРїСЂРµРґРµР»РёС‚СЊ СЏР·С‹Рє РїРѕ СЃС‚Р°С‚РёСЃС‚РёС‡РµСЃРєРёРј РєСЂРёС‚РµСЂРёСЏРј.
 			id_language = dict->GetLexAuto().GuessLanguage(org_phrase);
 
 			if (trace != NULL)
@@ -178,7 +180,7 @@ void Sentence::Parse(
 	}
 
 
-	// Пробелы и некоторые знаки являются естественными разделителями.
+	// РџСЂРѕР±РµР»С‹ Рё РЅРµРєРѕС‚РѕСЂС‹Рµ Р·РЅР°РєРё СЏРІР»СЏСЋС‚СЃСЏ РµСЃС‚РµСЃС‚РІРµРЅРЅС‹РјРё СЂР°Р·РґРµР»РёС‚РµР»СЏРјРё.
 	const int l = org_phrase.length();
 
 	UCString word;
@@ -187,7 +189,7 @@ void Sentence::Parse(
 	{
 		wchar_t c = org_phrase[i];
 
-		if (lem::is_uspace(c)) // могут быть всякие хитрые UNICODE-пробелы половинной длины и т.д.
+		if (lem::is_uspace(c)) // РјРѕРіСѓС‚ Р±С‹С‚СЊ РІСЃСЏРєРёРµ С…РёС‚СЂС‹Рµ UNICODE-РїСЂРѕР±РµР»С‹ РїРѕР»РѕРІРёРЅРЅРѕР№ РґР»РёРЅС‹ Рё С‚.Рґ.
 			c = L' ';
 
 		const bool delimiter = lem::is_udelim(c) || c == L' ';
@@ -211,7 +213,7 @@ void Sentence::Parse(
 				while (i < l)
 				{
 					c = org_phrase[i];
-					// Пробелы пропускаем
+					// РџСЂРѕР±РµР»С‹ РїСЂРѕРїСѓСЃРєР°РµРј
 					if (c == L' ' || c == L'\r' || c == L'\n')
 						i++;
 					else
@@ -225,10 +227,10 @@ void Sentence::Parse(
 			case L'!':
 			case L'?':
 			{
-				// Точке - особый подход
+				// РўРѕС‡РєРµ - РѕСЃРѕР±С‹Р№ РїРѕРґС…РѕРґ
 				if (c == L'.')
 				{
-					// В конце предложения?
+					// Р’ РєРѕРЅС†Рµ РїСЂРµРґР»РѕР¶РµРЅРёСЏ?
 					bool eol = true;
 					UCString dot; dot = c;
 
@@ -254,7 +256,7 @@ void Sentence::Parse(
 
 					if (eol)
 					{
-						// да, точка в конце предложения
+						// РґР°, С‚РѕС‡РєР° РІ РєРѕРЅС†Рµ РїСЂРµРґР»РѕР¶РµРЅРёСЏ
 						if (word.empty())
 						{
 							AddWord(dot);
@@ -287,8 +289,8 @@ void Sentence::Parse(
 						}
 					}
 
-					// Нет, эта точка либо является частью числа "3.141", либо частью сокращения "кг.",
-					// либо частью многоточия "..."
+					// РќРµС‚, СЌС‚Р° С‚РѕС‡РєР° Р»РёР±Рѕ СЏРІР»СЏРµС‚СЃСЏ С‡Р°СЃС‚СЊСЋ С‡РёСЃР»Р° "3.141", Р»РёР±Рѕ С‡Р°СЃС‚СЊСЋ СЃРѕРєСЂР°С‰РµРЅРёСЏ "РєРі.",
+					// Р»РёР±Рѕ С‡Р°СЃС‚СЊСЋ РјРЅРѕРіРѕС‚РѕС‡РёСЏ "..."
 					word += c;
 					break;
 				}
@@ -298,7 +300,7 @@ void Sentence::Parse(
 					i++;
 					word = c;
 
-					// может быть несколько ???, !!!, ... или даже смесь ?!
+					// РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅРµСЃРєРѕР»СЊРєРѕ ???, !!!, ... РёР»Рё РґР°Р¶Рµ СЃРјРµСЃСЊ ?!
 					while (i < l)
 					{
 						wchar_t c2 = org_phrase[i];
@@ -355,7 +357,7 @@ void Sentence::Parse(
 		}
 	}
 
-	// Последнее слово терминируется концом строки
+	// РџРѕСЃР»РµРґРЅРµРµ СЃР»РѕРІРѕ С‚РµСЂРјРёРЅРёСЂСѓРµС‚СЃСЏ РєРѕРЅС†РѕРј СЃС‚СЂРѕРєРё
 	if (!word.empty())
 	{
 		AddWord(word);
@@ -384,7 +386,7 @@ void Sentence::PrintOrg(OFormatter &s) const
 }
 
 // ***************************************************************
-// Конструирует строку со всеми лексемами исходного предложения.
+// РљРѕРЅСЃС‚СЂСѓРёСЂСѓРµС‚ СЃС‚СЂРѕРєСѓ СЃРѕ РІСЃРµРјРё Р»РµРєСЃРµРјР°РјРё РёСЃС…РѕРґРЅРѕРіРѕ РїСЂРµРґР»РѕР¶РµРЅРёСЏ.
 // ***************************************************************
 const lem::UFString Sentence::string(wchar_t delimiter) const
 {

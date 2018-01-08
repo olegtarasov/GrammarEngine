@@ -44,7 +44,6 @@
 #include <lem/oformatter.h>
 #include <lem/solarix/se_fuzzy_comparator.h>
 #include <lem/solarix/form_table.h>
-//#include <lem/solarix/phrasema.h>
 #include <lem/solarix/_sg_api.h>
 
 namespace Solarix
@@ -63,7 +62,6 @@ namespace Solarix
     class Dictionary;
     class LD_Seeker;
     class SentenceBroker;
-	class Sentence;
 
     class SynGram;
 
@@ -133,7 +131,6 @@ typedef lem::UFString * HGREN_LONGSTRING;
 typedef Solarix::Res_Pack* HGREN_RESPACK;
 typedef const Solarix::Tree_Node* HGREN_TREENODE;
 typedef Solarix::Variator* HGREN_LINKAGE;
-typedef Solarix::Sentence* HGREN_SENTENCE;
 #else
 typedef void* HGREN;
 typedef void* HGREN_STR;
@@ -141,7 +138,6 @@ typedef void* HGREN_RESPACK;
 typedef const void* HGREN_TREENODE;
 typedef void* HGREN_LINKAGE;
 typedef void* HGREN_SBROKER;
-typedef void* HGREN_SENTENCE;
 #endif
 
 inline Solarix::GREN_Strings* HandleStrList(HGREN_STR hStr)
@@ -167,11 +163,6 @@ inline Solarix::SentenceBroker* HandleBroker(HGREN_SBROKER hBroker)
 inline Solarix::GrammarEngineHolder* HandleEngine(HGREN hEngine)
 {
     return (Solarix::GrammarEngineHolder*)hEngine;
-}
-
-inline Solarix::Sentence* HandleSentence(HGREN_SENTENCE hSentence)
-{
-    return (Solarix::Sentence*)hSentence;
 }
 
 #endif

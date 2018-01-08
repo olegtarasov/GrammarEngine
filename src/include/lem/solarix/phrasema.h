@@ -4,8 +4,8 @@
 // (c) Koziev Elijah
 //
 // Content:
-// РљР»Р°СЃСЃ Phrasema - С„СЂР°Р·РµРјР°, С…СЂР°РЅРёС‚ Р·РІСѓРєРѕРІРѕРµ Рё С‚РµРєСЃС‚РѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ С„СЂР°Р·С‹,
-// РІРІРµРґРµРЅРЅРѕР№ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј РёР»Рё СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅРЅРѕР№ РЎРёСЃС‚РµРјРѕР№ РґР»СЏ РІС‹РґР°С‡Рё.
+// Класс Phrasema - фразема, хранит звуковое и текстовое представления фразы,
+// введенной пользователем или сгенерированной Системой для выдачи.
 // -----------------------------------------------------------------------------
 //
 // CD->03.04.1998
@@ -16,93 +16,89 @@
 #define SOL_PHRASEMA__H
 #pragma once
 
-#include <lem/ptr_container.h>
-#include <lem/solarix/lexem.h>
-//#include <lem/solarix/TokenizationTags.h>
+ #include <lem/ptr_container.h>
+ #include <lem/solarix/lexem.h>
+ //#include <lem/solarix/TokenizationTags.h>
 
-namespace lem
-{
-	class OFormatter;
-}
+ namespace lem
+ {
+  class OFormatter;
+ }
 
-namespace Solarix
-{
+ namespace Solarix
+ {
 
-	class Dictionary;
-	class TrTrace;
+ class Dictionary;
+ class TrTrace;
 
-	class SentenceWord
-	{
-	public:
-		lem::UCString word;
-		Solarix::Lexem normalized_word;
-		int entry_key;
+ class SentenceWord
+ {
+  public:
+   lem::UCString word;
+   Solarix::Lexem normalized_word;
+   //lem::Ptr<TokenizationTags> tags;
+   //lem::Ptr<lem::UFString> tokenizer_flags;
 
-		//lem::Ptr<TokenizationTags> tags;
-		//lem::Ptr<lem::UFString> tokenizer_flags;
+  public:
+   SentenceWord(void) {}
 
-	public:
-		SentenceWord(void) {}
+   SentenceWord( const SentenceWord &x );
+   void operator=( const SentenceWord &x );
 
-		SentenceWord(const SentenceWord &x);
-		void operator=(const SentenceWord &x);
-
-		//bool HasTokenizerFlag(void) const { return tokenizer_flags.NotNull(); }
-	};
+   //bool HasTokenizerFlag(void) const { return tokenizer_flags.NotNull(); }
+ };
 
 
-#if defined SOL_CAA && !defined SOL_NO_AA
-	// *****************************************************************
-	// Р РµР·СѓР»СЊС‚Р°С‚ СЃРµРіРјРµРЅС‚Р°С†РёРё Рё С‚РѕРєРµРЅРёР·Р°С†РёРё С‚РµРєСЃС‚Р°.
-	// *****************************************************************
-	class Sentence
-	{
-	private:
-		lem::PtrCollect<SentenceWord> words;
+ #if defined SOL_CAA && !defined SOL_NO_AA
+ // *****************************************************************
+ // Результат сегментации и токенизации текста.
+ // *****************************************************************
+ class Sentence
+ {
+  private:
+   lem::PtrCollect<SentenceWord> words;
 
-	public:
-		lem::UFString org_phrase; // РёСЃС…РѕРґРЅС‹Р№ С‚РµРєСЃС‚ РїСЂРµРґР»РѕР¶РµРЅРёСЏ
-		int id_language; // РѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ РґР»СЏ С„СЂР°Р·С‹ СЏР·С‹Рє (UNKNOWN РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ)
+  public:
+   lem::UFString org_phrase; // исходный текст предложения
+   int id_language; // определенный для фразы язык (UNKNOWN по умолчанию)
 
-	public:
-		Sentence(void);
-		Sentence(const Sentence &x);
+  public:
+   Sentence(void);
+   Sentence( const Sentence &x );
+   
+   virtual ~Sentence() {}
 
-		virtual ~Sentence() {}
+   void operator=( const Sentence &x );
 
-		void operator=(const Sentence &x);
+   virtual void Parse(
+                      const lem::UFString &buffer,
+                      bool Pretokenized,
+                      Solarix::Dictionary * dict,
+                      int LanguageID,
+                      TrTrace *trace
+                     );
 
-		virtual void Parse(
-			const lem::UFString &buffer,
-			bool Pretokenized,
-			Solarix::Dictionary * dict,
-			int LanguageID,
-			TrTrace *trace,
-			bool recognizeWordForms = false
-		);
+   const lem::UCString & GetWord( int word_index ) const { return words[word_index]->word; }
+   const Solarix::Lexem & GetNormalizedWord( int word_index ) const { return words[word_index]->normalized_word; }
+   //const TokenizationTags * GetTags( int word_index ) const { return words[word_index]->tags.IsNull() ? NULL : words[word_index]->tags.get(); }
+   //const lem::UFString * GetFlags( int word_index ) const { return words[word_index]->tokenizer_flags.IsNull() ? NULL : words[word_index]->tokenizer_flags.get(); }
+   //bool HasTokenizerFlag( int word_index ) const { return GetFlags(word_index)!=NULL; }
 
-		const lem::UCString & GetWord(int word_index) const { return words[word_index]->word; }
-		const Solarix::Lexem & GetNormalizedWord(int word_index) const { return words[word_index]->normalized_word; }
-		const int GetEntryKey(int word_index) const { return words[word_index]->entry_key; }
-		//const TokenizationTags * GetTags( int word_index ) const { return words[word_index]->tags.IsNull() ? NULL : words[word_index]->tags.get(); }
-		//const lem::UFString * GetFlags( int word_index ) const { return words[word_index]->tokenizer_flags.IsNull() ? NULL : words[word_index]->tokenizer_flags.get(); }
-		//bool HasTokenizerFlag( int word_index ) const { return GetFlags(word_index)!=NULL; }
+   void PrintOrg( OFormatter &s ) const;
 
-		void PrintOrg(OFormatter &s) const;
+   void AddWord( const lem::UCString & word );
 
-		void AddWord(const lem::UCString & word);
+   const lem::UFString string( wchar_t delimiter=L' ' ) const;
+   void clear(void);
+   bool empty(void) const { return words.empty(); }
+   lem::Container::size_type size(void) const { return words.size(); }
 
-		const lem::UFString string(wchar_t delimiter = L' ') const;
-		void clear(void);
-		bool empty(void) const { return words.empty(); }
-		lem::Container::size_type size(void) const { return words.size(); }
+   void SaveBin( lem::Stream &bin ) const;
+   void LoadBin( lem::Stream &bin );
+ };
+ #endif
 
-		void SaveBin(lem::Stream &bin) const;
-		void LoadBin(lem::Stream &bin);
-	};
-#endif
-
-} // namespace 'Solarix'
+ } // namespace 'Solarix'
 
 
 #endif

@@ -126,7 +126,6 @@
  typedef void* HGREN_LINKAGE;
  typedef const void* HGREN_TREENODE;
  typedef void* HGREN_SBROKER;
- typedef void* HGREN_SENTENCE;
 
  typedef void* HGREN_SPOKEN;
  typedef void* HGREN_LONGSTRING;
@@ -885,24 +884,6 @@ typedef HGREN_STR (SX_STDCALL * sol_Tokenize8_Fun)( HGREN hEngine, const char *S
  #define sol_Tokenize sol_TokenizeA
 #endif
 
-GREN_API(HGREN_SENTENCE) sol_TokenizeFormsW( HGREN hEngine, const wchar_t *Sentence, int LanguageID );
-GREN_API(HGREN_SENTENCE) sol_TokenizeFormsA( HGREN hEngine, const char *Sentence, int LanguageID );
-GREN_API(HGREN_SENTENCE) sol_TokenizeForms8( HGREN hEngine, const char *SentenceUtf8, int LanguageID );
-typedef HGREN_SENTENCE (SX_STDCALL * sol_TokenizeForms8_Fun)( HGREN hEngine, const char *SentenceUtf8, int LanguageID );
-
-#if defined UNICODE || defined _UNICODE 
- #define sol_TokenizeForms sol_TokenizeFormsW
-#else
- #define sol_TokenizeForms sol_TokenizeFormsA
-#endif
-
-GREN_API(int) sol_CountTokens( HGREN_SENTENCE hSentence );
-GREN_API(int) sol_GetTokenStringLen(HGREN_SENTENCE hSentence, int i);
-GREN_API(int) sol_GetTokenStringW( HGREN_SENTENCE hSentence, int i, wchar_t *Res );
-GREN_API(int) sol_GetTokenStringA( HGREN_SENTENCE hSentence, int i, char *Res );
-GREN_API(int) sol_GetTokenString8( HGREN_SENTENCE hSentence, int i, char *ResUtf8 );
-GREN_API(int) sol_GetTokenEntries( HGREN_SENTENCE hSentence, int* buffer, int size );
-GREN_API(int) sol_DeleteTokens( HGREN_SENTENCE hSentence );
 
 // N-grams database lookup
 // http://www.solarix.ru/for_developers/api/ngrams-api.shtml

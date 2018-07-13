@@ -3,7 +3,7 @@
 //
 // (c) by Koziev Elijah www.wordysoft.com all rights reserved 
 //
-// Manual: http://www.solarix.ru/for_developers/grammar-engine-api.shtml
+// Help: http://www.solarix.ru/for_developers/api/grammar-engine-api.shtml
 //
 // You must not eliminate, delete or supress these copyright strings
 // from the file!
@@ -89,10 +89,11 @@
 //              младшие 22 бита - макс. таймаут в миллисекундах.
 // 28.03.2016 - добавлена начальная реализация функции приведения словосочетаний
 //              к нормальной форме.
+// 04.04.2018 - рефакторинг кода с использованием фич C++11
 // -----------------------------------------------------------------------------
 //
 // CD->29.04.2007
-// LC->13.09.2017
+// LC->21.04.2018
 // --------------
 
 #include <lem/config.h>
@@ -196,7 +197,7 @@
 // http://www.solarix.ru/api/ru/sol_CountInts.shtml
 GREN_API(int) sol_CountInts(HGREN_INTARRAY h)
 {
-    if (h == NULL)
+    if (h == nullptr)
         return -1;
 
     return CastSizeToInt(((lem::MCollect<int>*)h)->size());
@@ -207,7 +208,7 @@ GREN_API(int) sol_CountInts(HGREN_INTARRAY h)
 // http://www.solarix.ru/api/ru/sol_GetInt.shtml
 GREN_API(int) sol_GetInt(HGREN_INTARRAY h, int i)
 {
-    if (h == NULL)
+    if (h == nullptr)
         return -1;
 
     try
@@ -256,7 +257,7 @@ GREN_API(int) sol_MaxLexemLen8(HGREN hEngine)
 
 // ************************************************************************ 
 // Return version info
-// Если Major, Minor и Build не NULL, то через них возвращаются компоненты
+// Если Major, Minor и Build не nullptr, то через них возвращаются компоненты
 // полной версии релиза.
 //
 // Возвращает 0 для DEMO, 1 для PRO
@@ -265,9 +266,9 @@ GREN_API(int) sol_GetVersion(HGREN hEngine, int *Major, int *Minor, int *Build)
 {
     Solarix::Version_Info ver;
 
-    if (Major != NULL) *Major = ver.major;
-    if (Minor != NULL) *Minor = ver.minor;
-    if (Build != NULL) *Build = ver.build;
+    if (Major != nullptr) *Major = ver.major;
+    if (Minor != nullptr) *Minor = ver.minor;
+    if (Build != nullptr) *Build = ver.build;
 
 #if defined SOLARIX_DEMO
     return 0;
@@ -283,12 +284,12 @@ GREN_API(int) sol_GetVersion(HGREN hEngine, int *Major, int *Minor, int *Build)
 // ****************************************************************************
 GREN_API(int) sol_SeekWord(HGREN hEngine, const wchar_t *word, int Allow_Dynforms)
 {
-    if (!hEngine || word == NULL)
+    if (!hEngine || word == nullptr)
         return -1;
 
     try
     {
-        if (HandleEngine(hEngine)->seeker == NULL)
+        if (HandleEngine(hEngine)->seeker.IsNull())
         {
             lem::MCollect<Solarix::Word_Coord> found_list;
             lem::UCString w(word);
@@ -331,7 +332,7 @@ GREN_API(int) sol_Free(HGREN hEngine, void *ptr)
 
 GREN_API(int) sol_CountStrings(HGREN_STR hStrings)
 {
-    if (hStrings == NULL)
+    if (hStrings == nullptr)
         return 0;
 
     try
@@ -347,7 +348,7 @@ GREN_API(int) sol_CountStrings(HGREN_STR hStrings)
 
 GREN_API(int) sol_GetStrings(HGREN_STR hStrings, wchar_t **Res)
 {
-    if (hStrings == NULL || Res == NULL)
+    if (hStrings == nullptr || Res == nullptr)
         return -1;
 
     try
@@ -367,7 +368,7 @@ GREN_API(int) sol_GetStrings(HGREN_STR hStrings, wchar_t **Res)
 
 GREN_API(int) sol_GetStringLen(HGREN_STR hStrings, int i)
 {
-    if (hStrings == NULL)
+    if (hStrings == nullptr)
         return -1;
 
     try
@@ -382,7 +383,7 @@ GREN_API(int) sol_GetStringLen(HGREN_STR hStrings, int i)
 
 GREN_API(int) sol_GetStringW(HGREN_STR hStrings, int i, wchar_t *Res)
 {
-    if (hStrings == NULL || Res == NULL)
+    if (hStrings == nullptr || Res == nullptr)
         return -1;
 
     try
@@ -400,7 +401,7 @@ GREN_API(int) sol_GetStringW(HGREN_STR hStrings, int i, wchar_t *Res)
 
 GREN_API(int) sol_GetStringA(HGREN_STR hStrings, int i, char *Res)
 {
-    if (hStrings == NULL || Res == NULL)
+    if (hStrings == nullptr || Res == nullptr)
         return -1;
 
     try
@@ -417,7 +418,7 @@ GREN_API(int) sol_GetStringA(HGREN_STR hStrings, int i, char *Res)
 
 GREN_API(int) sol_GetString8(HGREN_STR hStrings, int i, char *ResUtf8)
 {
-    if (hStrings == NULL || ResUtf8 == NULL)
+    if (hStrings == nullptr || ResUtf8 == nullptr)
         return -1;
 
     try
@@ -438,7 +439,7 @@ GREN_API(int) sol_DeleteStrings(HGREN_STR hStrings)
 {
     try
     {
-        if (hStrings != NULL)
+        if (hStrings != nullptr)
             delete HandleStrList(hStrings);
 
         return 0;
@@ -468,7 +469,7 @@ GREN_API(int) sol_DeleteGrammarEngine(HGREN hEngine)
 {
     try
     {
-        if (hEngine != NULL)
+        if (hEngine != nullptr)
         {
             GrammarEngineHolder * ptr = (GrammarEngineHolder*)hEngine;
             delete ptr;
@@ -506,7 +507,7 @@ GREN_API(HGREN) sol_CreateGrammarEngineExW(const wchar_t *DictionaryXml, int Fla
         {
             SQLiteInitialized = true;
             if (!lem::sqlite_init_serialized_mode())
-                return NULL;
+                return nullptr;
         }
     }
 #endif
@@ -530,7 +531,7 @@ GREN_API(HGREN) sol_CreateGrammarEngineExW(const wchar_t *DictionaryXml, int Fla
      wchar_t p[ lem::Path::MaxLen ];
      memset( p, 0, sizeof(p) );
      GetModuleFileNameW( GetModuleHandleW(L"solarix_grammar_engine.dll"), p, lem::Path::MaxLen );
-     MessageBoxW( NULL, p, L"DEBUG-1", MB_OK );
+     MessageBoxW( nullptr, p, L"DEBUG-1", MB_OK );
      // ---------------
     */
 
@@ -544,7 +545,7 @@ Failed:;
     sol_DeleteSearchEngine(hEngine);
 #endif
 
-    return NULL;
+    return nullptr;
 }
 
 GREN_API(HGREN) sol_CreateGrammarEngineW(const wchar_t *DictionaryXml)
@@ -583,7 +584,7 @@ GREN_API(HGREN) sol_CreateGrammarEngineExA(const char *DictionaryXml, int Flags)
 Failed:;
     sol_DeleteGrammarEngine(hEngine);
 
-    return NULL;
+    return nullptr;
 }
 
 GREN_API(HGREN) sol_CreateGrammarEngineA(const char *DictionaryXml)
@@ -633,7 +634,7 @@ GREN_API(int) sol_LoadDictionaryA(HGREN hEngine, const char *Filename)
 // ***********************************************************************
 GREN_API(int) sol_LoadDictionaryW(HGREN hEngine, const wchar_t *Filename)
 {
-    if (lem::lem_is_empty(Filename) || hEngine == NULL)
+    if (lem::lem_is_empty(Filename) || hEngine == nullptr)
         return 0;
 
 #if defined LEM_THREADS
@@ -676,7 +677,7 @@ GREN_API(int) sol_LoadDictionaryExA(HGREN hEngine, const char *Filename, int Fla
 
 GREN_API(int) sol_LoadDictionaryExW(HGREN hEngine, const wchar_t *Filename, int Flags)
 {
-    if (lem::lem_is_empty(Filename) || hEngine == NULL)
+    if (lem::lem_is_empty(Filename) || hEngine == nullptr)
         return 0;
 
 #if defined LEM_THREADS
@@ -711,7 +712,7 @@ GREN_API(int) sol_IsDictionaryLoaded(HGREN hEngine)
 #if defined LEM_THREADS
     lem::Process::CritSecLocker guard(&ENGINE->cs);
 #endif
-    return (hEngine != NULL && !!HandleEngine(hEngine)->dict) ? 1 : 0;
+    return (hEngine != nullptr && !!HandleEngine(hEngine)->dict) ? 1 : 0;
 }
 
 
@@ -721,7 +722,7 @@ GREN_API(int) sol_IsDictionaryLoaded(HGREN hEngine)
 // http://www.solarix.ru/api/en/sol_UnloadDictionary.shtml
 GREN_API(void) sol_UnloadDictionary(HGREN hEngine)
 {
-    if (hEngine == NULL)
+    if (hEngine == nullptr)
         return;
 
     try
@@ -746,7 +747,7 @@ GREN_API(void) sol_UnloadDictionary(HGREN hEngine)
 // http://www.solarix.ru/api/en/sol_HasLanguage.shtml
 GREN_API(int) sol_HasLanguage(HGREN hEngine, int LanguageID)
 {
-    if (hEngine == NULL || LanguageID == UNKNOWN || HandleEngine(hEngine)->dict.IsNull())
+    if (hEngine == nullptr || LanguageID == UNKNOWN || HandleEngine(hEngine)->dict.IsNull())
         return 0;
 
     int ret = 0;
@@ -773,7 +774,7 @@ GREN_API(int) sol_HasLanguage(HGREN hEngine, int LanguageID)
 // ***********************************************************************
 GREN_API(int) sol_CountEntries(HGREN hEngine)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict)
         return -1;
 
     int ret = -1;
@@ -795,7 +796,7 @@ GREN_API(int) sol_CountEntries(HGREN hEngine)
 // ***********************************************************************
 GREN_API(int) sol_CountForms(HGREN h)
 {
-    if (h == NULL || !HandleEngine(h)->dict)
+    if (h == nullptr || !HandleEngine(h)->dict)
         return -1;
 
     try
@@ -816,7 +817,7 @@ GREN_API(int) sol_CountForms(HGREN h)
 // ****************************************************************************
 GREN_API(int) sol_CountLinks(HGREN hEngine)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict)
         return -1;
 
     try
@@ -839,7 +840,7 @@ GREN_API(int) sol_CountLinks(HGREN hEngine)
 // ********************************************************
 GREN_API(int) sol_DictionaryVersion(HGREN hEngine)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict)
         return -1;
 
     return HandleEngine(hEngine)->dict->version.code;
@@ -853,7 +854,7 @@ GREN_API(int) sol_DictionaryVersion(HGREN hEngine)
 // Set default language ID. This is vital parameter for correct normalization of characters.
 GREN_API(int) sol_SetLanguage(HGREN hEngine, int LanguageID)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict)
         return -1;
 
 #if defined LEM_THREADS
@@ -885,12 +886,12 @@ GREN_API(int) sol_FindWord(
     int *Class
 )
 {
-    if (h == NULL || !HandleEngine(h)->dict)
+    if (h == nullptr || !HandleEngine(h)->dict)
         return -1;
 
-    if (EntryIndex != NULL) *EntryIndex = UNKNOWN;
-    if (Form != NULL) *Form = UNKNOWN;
-    if (Class != NULL) *Class = UNKNOWN;
+    if (EntryIndex != nullptr) *EntryIndex = UNKNOWN;
+    if (Form != nullptr) *Form = UNKNOWN;
+    if (Class != nullptr) *Class = UNKNOWN;
 
     DEMO_SINGLE_THREAD(h)
 
@@ -909,7 +910,7 @@ GREN_API(int) sol_FindWord(
         MCollect<ProjScore> val_list;
         PtrCollect<LA_ProjectInfo> inf_list;
 
-        HandleEngine(h)->dict->GetLexAuto().ProjectWord(rc, found_list, val_list, inf_list, LexicalAutomat/*::DynformsMode*/::Wordforms, 0, HandleEngine(h)->DefaultLanguage, NULL);
+        HandleEngine(h)->dict->GetLexAuto().ProjectWord(rc, found_list, val_list, inf_list, LexicalAutomat/*::DynformsMode*/::Wordforms, 0, HandleEngine(h)->DefaultLanguage, nullptr);
 
         if (!found_list.empty())
         {
@@ -1007,7 +1008,7 @@ static void getForms(
     MCollect<ProjScore> val_list;
     PtrCollect<LA_ProjectInfo> inf_list;
 
-    la.ProjectWord(rc_ml, found_list, val_list, inf_list, morphology, 0, HandleEngine(h)->DefaultLanguage, NULL);
+    la.ProjectWord(rc_ml, found_list, val_list, inf_list, morphology, 0, HandleEngine(h)->DefaultLanguage, nullptr);
 
     // Накапливаем неповторяющийся список индексов статей
     for (Container::size_type i = 0; i < found_list.size(); i++)
@@ -1095,8 +1096,8 @@ GREN_API(HGREN_STR) sol_FindStringsEx(
     int nJumps
 )
 {
-    if (h == NULL || !HandleEngine(h)->dict)
-        return NULL;
+    if (h == nullptr || !HandleEngine(h)->dict)
+        return nullptr;
 
     GREN_Strings *res = new GREN_Strings;
 
@@ -1113,7 +1114,7 @@ GREN_API(HGREN_STR) sol_FindStringsEx(
     catch (...)
     {
         delete res;
-        return NULL;
+        return nullptr;
     }
 
     return res;
@@ -1166,7 +1167,7 @@ GREN_API(int) sol_CorrNounNumber(
     wchar_t *Result
 )
 {
-    if (h == NULL || !HandleEngine(h)->dict || Result == NULL)
+    if (h == nullptr || !HandleEngine(h)->dict || Result == nullptr)
         return -1;
 
     *Result = 0;
@@ -1433,9 +1434,10 @@ GREN_API(int) sol_Value2Text(
     int Gender
 )
 {
-    if (h == NULL || !HandleEngine(h)->dict || Result == NULL)
+    if (h == nullptr || !HandleEngine(h)->dict || Result == nullptr)
         return -1;
 
+    *Result = 0;
 #if defined LEM_OFMT_MICROSOL
     try
     {
@@ -1482,7 +1484,7 @@ GREN_API(int) sol_FindEntry(
     int Language         // Language ID (if ambiguos)
 )
 {
-    if (h == NULL || !HandleEngine(h)->dict)
+    if (h == nullptr || !HandleEngine(h)->dict)
         return -2;
 
     DEMO_SINGLE_THREAD(h)
@@ -1559,7 +1561,7 @@ GREN_API(int) sol_GetNounForm(
 {
     *Result = 0;
 
-    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == NULL)
+    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     try
@@ -1631,7 +1633,7 @@ GREN_API(int) sol_GetVerbForm(
     wchar_t *Result
 )
 {
-    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == NULL)
+    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     *Result = 0;
@@ -1706,7 +1708,7 @@ GREN_API(int) sol_CorrVerbNumber(
     wchar_t *Result
 )
 {
-    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == NULL)
+    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     *Result = 0;
@@ -1754,7 +1756,7 @@ GREN_API(int) sol_GetAdjectiveForm(
     wchar_t *Result
 )
 {
-    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == NULL)
+    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     *Result = 0;
@@ -1873,7 +1875,7 @@ GREN_API(int) sol_CorrAdjNumber(
     wchar_t *Result
 )
 {
-    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == NULL)
+    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     *Result = 0;
@@ -2164,7 +2166,7 @@ static int Decline_Adj(HGREN h, int ientry, int Case, int Number, int Anim, int 
 // **********************************************************
 GREN_API(int) sol_LemmatizeWord(HGREN h, wchar_t *word, int Allow_Dynforms)
 {
-    if (!h || HandleEngine(h)->seeker == NULL || word == NULL)
+    if (!h || HandleEngine(h)->seeker.IsNull() || word == nullptr)
         return 0;
 
     DEMO_SINGLE_THREAD(h)
@@ -2297,8 +2299,8 @@ GREN_API(int) sol_TranslateToInfinitive(HGREN hEngine, int EntryID)
 // ***************************************************************************************
 GREN_API(HGREN_WCOORD) sol_ProjectWord(HGREN hEngine, const wchar_t *Word, int Allow_Dynforms)
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || Word == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || Word == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -2326,7 +2328,7 @@ GREN_API(HGREN_WCOORD) sol_ProjectWord(HGREN hEngine, const wchar_t *Word, int A
             Allow_Dynforms ? LexicalAutomat::Dynforms_Last_Chance : LexicalAutomat::Wordforms,
             0,
             HandleEngine(hEngine)->DefaultLanguage,
-            NULL
+            nullptr
         );
 
         // заполним списки тегов для каждого варианта распознавания.
@@ -2346,7 +2348,7 @@ GREN_API(HGREN_WCOORD) sol_ProjectWord(HGREN hEngine, const wchar_t *Word, int A
                     item_tags = e.forms()[res->list[i].GetForm()].coords();
                 }
 
-                if (inf_list[i] != NULL && !inf_list[i]->coords.empty())
+                if (inf_list[i] != nullptr && !inf_list[i]->coords.empty())
                 {
                     for (lem::Container::size_type j = 0; j < inf_list[i]->coords.size(); ++j)
                     {
@@ -2367,11 +2369,11 @@ GREN_API(HGREN_WCOORD) sol_ProjectWord(HGREN hEngine, const wchar_t *Word, int A
 
         // Ни одного варианта распознавания.
         delete res;
-        return NULL;
+        return nullptr;
     }
     CATCH_API(hEngine)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -2393,8 +2395,8 @@ GREN_API(HGREN_WCOORD) sol_ProjectMisspelledWord(
     int nmaxmiss
 )
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || Word == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || Word == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -2421,7 +2423,7 @@ GREN_API(HGREN_WCOORD) sol_ProjectMisspelledWord(
             Allow_Dynforms ? LexicalAutomat::Dynforms_Last_Chance : LexicalAutomat::Wordforms,
             nmaxmiss,
             HandleEngine(hEngine)->DefaultLanguage,
-            NULL
+            nullptr
         );
 
         if (!res->list.empty())
@@ -2438,7 +2440,7 @@ GREN_API(HGREN_WCOORD) sol_ProjectMisspelledWord(
                     item_tags = e.forms()[res->list[i].GetForm()].coords();
                 }
 
-                if (inf_list[i] != NULL && !inf_list[i]->coords.empty())
+                if (inf_list[i] != nullptr && !inf_list[i]->coords.empty())
                 {
                     for (lem::Container::size_type j = 0; j < inf_list[i]->coords.size(); ++j)
                     {
@@ -2458,11 +2460,11 @@ GREN_API(HGREN_WCOORD) sol_ProjectMisspelledWord(
 
         delete res;
 
-        return NULL;
+        return nullptr;
     }
     CATCH_API(hEngine)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -2484,7 +2486,7 @@ GREN_API(HGREN_WCOORD) sol_ProjectMisspelledWord8(
 // ***************************************************************************************
 GREN_API(int) sol_CountProjections(HGREN_WCOORD hList)
 {
-    if (hList == NULL)
+    if (hList == nullptr)
         return 0;
 
     return CastSizeToInt(((const Solarix::GREN_WordCoords*)hList)->list.size());
@@ -2634,8 +2636,8 @@ GREN_API(HGREN_RESPACK) sol_MorphologyAnalysis(
     int LanguageID
 )
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || Sentence == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || Sentence == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -2649,7 +2651,7 @@ GREN_API(HGREN_RESPACK) sol_MorphologyAnalysis(
 
         const bool Schedule1 = (MorphologicalFlags == 0 && SyntacticFlags == 0);
 
-        WrittenTextAnalysisSession current_analysis(HandleEngine(hEngine)->dict.get(), NULL);
+        WrittenTextAnalysisSession current_analysis(HandleEngine(hEngine)->dict.get(), nullptr);
         current_analysis.params.SetLanguageID(UseLanguageID);
         current_analysis.params.Pretokenized = Pretokenized;
         current_analysis.params.AllowPrimaryFuzzyWordRecog = Allow_Fuzzy;
@@ -2698,10 +2700,10 @@ GREN_API(HGREN_RESPACK) sol_MorphologyAnalysis(
     }
     CATCH_API(hEngine)
     {
-        return NULL;
+        return nullptr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -2778,7 +2780,7 @@ static lem::UFString NormalizePhrase(HGREN hEngine, HGREN_RESPACK hLinkages)
         {
             const TrFunction * func = dict.GetLexAuto().GetFunctions().Get().Find(func_name);
 
-            TrFunContext ctx0((TrFunContext*)NULL);
+            TrFunContext ctx0((TrFunContext*)nullptr);
             TrContextInvokation ctx2(&ctx0);
             ctx2.AddVar(L"((return))", lem::Ptr<TrValue>(new TrTypeValue(TrTreeType())));
 
@@ -2786,7 +2788,7 @@ static lem::UFString NormalizePhrase(HGREN hEngine, HGREN_RESPACK hLinkages)
             ctx2.AddVar(func->arg_name[0], v);
 
             ElapsedTimeConstraint null_constraints(100000, 10000);
-            func->GetBody().Run(null_constraints, dict.GetLexAuto(), ctx2, NULL);
+            func->GetBody().Run(null_constraints, dict.GetLexAuto(), ctx2, nullptr);
 
             lem::Ptr<TrValue> func_ret(ctx2.GetVar(L"((return))"));
 
@@ -2818,8 +2820,8 @@ GREN_API(wchar_t*) sol_NormalizePhraseW(
     HGREN_RESPACK hLinkages
 )
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || hLinkages == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || hLinkages == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -2832,8 +2834,8 @@ GREN_API(wchar_t*) sol_NormalizePhraseW(
 
 GREN_API(char*) sol_NormalizePhrase8(HGREN hEngine, HGREN_RESPACK hLinkages)
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || hLinkages == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || hLinkages == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -2859,10 +2861,10 @@ GREN_API(HGREN_RESPACK) sol_SyntaxAnalysis(
     int LanguageID
 )
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || Sentence == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || Sentence == nullptr)
+        return nullptr;
 
-    DEMO_SINGLE_THREAD(hEngine)
+    DEMO_SINGLE_THREAD(hEngine);
 
         try
     {
@@ -2876,7 +2878,7 @@ GREN_API(HGREN_RESPACK) sol_SyntaxAnalysis(
         const bool FindFacts = (SyntacticFlags&SOL_GREN_FINDFACTS) == SOL_GREN_FINDFACTS;
         const bool Schedule1 = (SyntacticFlags & ~SOL_GREN_REORDER_TREE) == 0;
 
-        WrittenTextAnalysisSession current_analysis(HandleEngine(hEngine)->dict.get(), NULL);
+        WrittenTextAnalysisSession current_analysis(HandleEngine(hEngine)->dict.get(), nullptr);
         current_analysis.params.SetLanguageID(UseLanguageID);
 
         current_analysis.params.Pretokenized = Pretokenized;
@@ -2920,10 +2922,10 @@ GREN_API(HGREN_RESPACK) sol_SyntaxAnalysis(
     }
     CATCH_API(hEngine)
     {
-        return NULL;
+        return nullptr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -2971,9 +2973,7 @@ GREN_API(void) sol_DeleteResPack(HGREN_RESPACK hPack)
 {
     try
     {
-#if !defined SOL_NO_AA
         delete (Solarix::Res_Pack*)hPack;
-#endif
     }
     catch (...)
     {
@@ -2995,7 +2995,7 @@ GREN_API(int) sol_GetEntryName(
     wchar_t *Result
 )
 {
-    if (!h || EntryIndex == -1 || Result == NULL)
+    if (!h || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     *Result = 0;
@@ -3343,14 +3343,10 @@ GREN_API(int) sol_CountCoordStates(HGREN hEngine, int CoordID)
 // ***************************************************
 GREN_API(int) sol_CountGrafs(HGREN_RESPACK hPack)
 {
-#if !defined SOL_NO_AA
-    if (hPack == NULL)
+    if (hPack == nullptr)
         return 0;
 
     return CastSizeToInt(((Res_Pack*)hPack)->vars().size());
-#else
-    return 0;
-#endif
 }
 
 
@@ -3361,23 +3357,40 @@ GREN_API(int) sol_CountRoots(HGREN_RESPACK hPack, int iGraf)
 {
     try
     {
-#if !defined SOL_NO_AA
-        if (hPack == NULL)
+        if (hPack == nullptr)
             return 0;
 
         if (iGraf < 0 || iGraf >= CastSizeToInt(((Res_Pack*)hPack)->vars().size()))
             return -1;
 
         return ((Res_Pack*)hPack)->vars()[iGraf]->size();
-#else
-        return 0;
-#endif
     }
     catch (...)
     {
         return -1;
+    }
 }
+
+
+
+GREN_API(int) sol_GetGrafScore(HGREN_RESPACK hPack, int iGraf)
+{
+    try
+    {
+        if (hPack == nullptr)
+        return 0;
+
+        if (iGraf < 0 || iGraf >= CastSizeToInt(((Res_Pack*)hPack)->vars().size()))
+            return -1;
+
+        return ((Res_Pack*)hPack)->vars()[iGraf]->GetScore();
+    }
+    catch (...)
+    {
+        return -1;
+    }
 }
+
 
 
 // *****************************************************
@@ -3386,8 +3399,8 @@ GREN_API(int) sol_CountRoots(HGREN_RESPACK hPack, int iGraf)
 GREN_API(HGREN_TREENODE) sol_GetRoot(HGREN_RESPACK hPack, int iGraf, int iRoot)
 {
 #if !defined SOL_NO_AA
-    if (hPack == NULL)
-        return NULL;
+    if (hPack == nullptr)
+        return nullptr;
 
     try
     {
@@ -3395,10 +3408,10 @@ GREN_API(HGREN_TREENODE) sol_GetRoot(HGREN_RESPACK hPack, int iGraf, int iRoot)
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -3409,7 +3422,7 @@ GREN_API(HGREN_TREENODE) sol_GetRoot(HGREN_RESPACK hPack, int iGraf, int iRoot)
 GREN_API(int) sol_CountLeafs(HGREN_TREENODE hNode)
 {
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     return CastSizeToInt(HandleNode(hNode)->leafs().size());
@@ -3426,7 +3439,7 @@ GREN_API(int) sol_CountLeafs(HGREN_TREENODE hNode)
 GREN_API(HGREN_TREENODE) sol_GetLeaf(HGREN_TREENODE hNode, int iLeaf)
 {
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     try
@@ -3435,11 +3448,11 @@ GREN_API(HGREN_TREENODE) sol_GetLeaf(HGREN_TREENODE hNode, int iLeaf)
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -3449,7 +3462,7 @@ GREN_API(HGREN_TREENODE) sol_GetLeaf(HGREN_TREENODE hNode, int iLeaf)
 GREN_API(int) sol_GetLeafLinkType(HGREN_TREENODE hNode, int iLeaf)
 {
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     try
@@ -3472,11 +3485,11 @@ GREN_API(int) sol_GetLeafLinkType(HGREN_TREENODE hNode, int iLeaf)
 // *****************************************************
 GREN_API(int) sol_GetNodeIEntry(HGREN hEngine, HGREN_TREENODE hNode)
 {
-    if (hEngine == NULL || HandleEngine(hEngine)->dict == NULL)
+    if (hEngine == nullptr || HandleEngine(hEngine)->dict.IsNull())
         return UNKNOWN;
 
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     int ekey = HandleNode(hNode)->GetNode().GetEntryKey();
@@ -3489,11 +3502,11 @@ GREN_API(int) sol_GetNodeIEntry(HGREN hEngine, HGREN_TREENODE hNode)
 
 GREN_API(int) sol_GetNodeVerIEntry(HGREN hEngine, HGREN_TREENODE hNode, int iver)
 {
-    if (hEngine == NULL || HandleEngine(hEngine)->dict == NULL)
+    if (hEngine == nullptr || HandleEngine(hEngine)->dict.IsNull())
         return UNKNOWN;
 
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     int ekey = UNKNOWN;
@@ -3512,7 +3525,7 @@ GREN_API(int) sol_GetNodeVerIEntry(HGREN hEngine, HGREN_TREENODE hNode, int iver
 GREN_API(int) sol_GetNodeVersionCount(HGREN hEngine, HGREN_TREENODE hNode)
 {
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     return CastSizeToInt(HandleNode(hNode)->GetNode().GetAlts().size()) + 1;
@@ -3524,7 +3537,7 @@ GREN_API(int) sol_GetNodeVersionCount(HGREN hEngine, HGREN_TREENODE hNode)
 
 GREN_API(int) sol_GetNodePosition(HGREN_TREENODE hNode)
 {
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return -1;
 
 #if !defined SOL_NO_AA
@@ -3539,7 +3552,7 @@ GREN_API(int) sol_GetNodePosition(HGREN_TREENODE hNode)
 
 GREN_API(int) sol_CountNodeMarks(HGREN_TREENODE hNode)
 {
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return -1;
 
     try
@@ -3555,7 +3568,7 @@ GREN_API(int) sol_CountNodeMarks(HGREN_TREENODE hNode)
 
 GREN_API(int) sol_GetNodeMarkNameW(HGREN_TREENODE hNode, int mark_index, wchar_t * name_buffer)
 {
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return -1;
 
     try
@@ -3572,8 +3585,8 @@ GREN_API(int) sol_GetNodeMarkNameW(HGREN_TREENODE hNode, int mark_index, wchar_t
 
 GREN_API(HGREN_LONGSTRING) sol_SerializeNodeMark(HGREN hEngine, HGREN_TREENODE hNode, int mark_index, int format)
 {
-    if (hNode == NULL)
-        return NULL;
+    if (hNode == nullptr)
+        return nullptr;
 
     try
     {
@@ -3585,13 +3598,13 @@ GREN_API(HGREN_LONGSTRING) sol_SerializeNodeMark(HGREN hEngine, HGREN_TREENODE h
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
 GREN_API(int) sol_GetLongStringLenW(HGREN_LONGSTRING hString)
 {
-    if (hString == NULL)
+    if (hString == nullptr)
         return 0;
 
     try
@@ -3607,7 +3620,7 @@ GREN_API(int) sol_GetLongStringLenW(HGREN_LONGSTRING hString)
 
 GREN_API(int) sol_GetLongStringW(HGREN_LONGSTRING hString, wchar_t * buffer)
 {
-    if (hString == NULL)
+    if (hString == nullptr)
         return 0;
 
     try
@@ -3647,7 +3660,7 @@ GREN_API(int) sol_DeleteLongString(HGREN_LONGSTRING hString)
 // *****************************************************
 GREN_API(void) sol_GetNodeContents(HGREN_TREENODE hNode, wchar_t *Buffer)
 {
-    if (Buffer == NULL)
+    if (Buffer == nullptr)
         return;
 
     try
@@ -3655,7 +3668,7 @@ GREN_API(void) sol_GetNodeContents(HGREN_TREENODE hNode, wchar_t *Buffer)
         *Buffer = 0;
 
 #if !defined SOL_NO_AA
-        if (hNode == NULL)
+        if (hNode == nullptr)
             return;
 
         const Word_Form &wf = HandleNode(hNode)->GetNode();
@@ -3673,7 +3686,7 @@ GREN_API(void) sol_GetNodeContents(HGREN_TREENODE hNode, wchar_t *Buffer)
 
 GREN_API(void) sol_GetNodeContents8(HGREN_TREENODE hNode, char *BufferUtf8)
 {
-    if (BufferUtf8 == NULL)
+    if (BufferUtf8 == nullptr)
         return;
 
     try
@@ -3681,7 +3694,7 @@ GREN_API(void) sol_GetNodeContents8(HGREN_TREENODE hNode, char *BufferUtf8)
         *BufferUtf8 = 0;
 
 #if !defined SOL_NO_AA
-        if (hNode == NULL)
+        if (hNode == nullptr)
             return;
 
         const Word_Form &wf = HandleNode(hNode)->GetNode();
@@ -3703,7 +3716,7 @@ GREN_API(int) sol_GetNodeContentsLen(HGREN_TREENODE hNode)
     try
     {
 #if !defined SOL_NO_AA
-        if (hNode == NULL)
+        if (hNode == nullptr)
             return -1;
 
         const int len = HandleNode(hNode)->GetNode().GetName()->ToWord().length();
@@ -3745,7 +3758,7 @@ GREN_API(int) sol_RestoreCasing(HGREN hEngine, wchar_t *Word, int EntryIndex)
 
 GREN_API(int) sol_RestoreCasing8(HGREN hEngine, char *WordUtf8, int EntryIndex)
 {
-    if (WordUtf8 == NULL || EntryIndex == UNKNOWN)
+    if (WordUtf8 == nullptr || EntryIndex == UNKNOWN)
         return -1;
 
     wchar_t buf[lem::UCString::max_len + 1];
@@ -3768,7 +3781,7 @@ GREN_API(int) sol_RestoreCasing8(HGREN hEngine, char *WordUtf8, int EntryIndex)
 // ***********************************************************************
 GREN_API(int) sol_TranslateToBase(HGREN hEngine, wchar_t *Word, int AllowDynforms)
 {
-    if (hEngine == NULL || HandleEngine(hEngine)->dict == NULL || Word == NULL)
+    if (hEngine == nullptr || HandleEngine(hEngine)->dict.IsNull() || Word == nullptr)
         return UNKNOWN;
 
     DEMO_SINGLE_THREAD(hEngine)
@@ -3779,7 +3792,7 @@ GREN_API(int) sol_TranslateToBase(HGREN hEngine, wchar_t *Word, int AllowDynform
         UCString w(Word);
 
         int ientry = UNKNOWN;
-        if (HandleEngine(hEngine)->seeker == NULL)
+        if (HandleEngine(hEngine)->seeker.IsNull())
         {
             MCollect<Word_Coord> found_list;
             HandleEngine(hEngine)->dict->GetLexAuto().ProjectWord(w, found_list, UNKNOWN);
@@ -3816,8 +3829,8 @@ GREN_API(HGREN_STR) sol_TranslateToBases(
     int AllowDynforms
 )
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || Word == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || Word == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -3843,11 +3856,11 @@ GREN_API(HGREN_STR) sol_TranslateToBases(
             AllowDynforms ? LexicalAutomat::Dynforms_Last_Chance : LexicalAutomat::Wordforms,
             0,
             HandleEngine(hEngine)->DefaultLanguage,
-            NULL
+            nullptr
         );
 
         if (coords.empty())
-            return NULL;
+            return nullptr;
 
         SynGram &sg = HandleEngine(hEngine)->dict->GetSynGram();
         GREN_Strings *res = new GREN_Strings;
@@ -3879,7 +3892,7 @@ GREN_API(HGREN_STR) sol_TranslateToBases(
     }
     CATCH_API(hEngine)
 
-        return NULL;
+        return nullptr;
 }
 
 // *****************************************************************************
@@ -3890,7 +3903,7 @@ GREN_API(HGREN_STR) sol_TranslateToBases(
 GREN_API(int) sol_Stemmer(HGREN hEngine, const wchar_t *Word)
 {
 #if defined GM_STEMMER
-    if (!hEngine || !HandleEngine(hEngine)->dict || Word == NULL)
+    if (!hEngine || !HandleEngine(hEngine)->dict || Word == nullptr)
         return -1;
 
     DEMO_SINGLE_THREAD(hEngine)
@@ -3899,15 +3912,15 @@ GREN_API(int) sol_Stemmer(HGREN hEngine, const wchar_t *Word)
     {
         // Быстрый поиск словоформы по лексикону
         UCString w(Word);
-        int ientry = HandleEngine(hEngine)->seeker == NULL ? UNKNOWN : HandleEngine(hEngine)->seeker->Find(w, true);
+        int ientry = HandleEngine(hEngine)->seeker.IsNull() ? UNKNOWN : HandleEngine(hEngine)->seeker->Find(w, true);
         if (ientry == UNKNOWN)
         {
             // Это слово отсутствует в лексиконе.
             // Попробуем применить известные правила аффиксов.
 
-            LEM_CHECKIT_Z(HandleEngine(hEngine)->fuzzy != NULL);
+            LEM_CHECKIT_Z(HandleEngine(hEngine)->fuzzy.NotNull());
 
-            if (HandleEngine(hEngine)->fuzzy == NULL)
+            if (HandleEngine(hEngine)->fuzzy.NotNull())
                 // Отсутствует нужный модуль.
                 return -1;
 
@@ -3972,8 +3985,8 @@ GREN_API(HGREN_INTARRAY) sol_SeekThesaurus(
     int nJumps
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict)
-        return NULL;
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict)
+        return nullptr;
 
 #if defined GM_THESAURUS
     lem::MCollect<int> *list = new lem::MCollect<int>();
@@ -3999,11 +4012,11 @@ GREN_API(HGREN_INTARRAY) sol_SeekThesaurus(
     CATCH_API(hEngine)
 
         delete list;
-    return NULL;
+    return nullptr;
 #endif
 
-    return NULL;
-    }
+    return nullptr;
+}
 
 
 GREN_API(HGREN_INTARRAY) sol_Thesaurus(
@@ -4012,8 +4025,8 @@ GREN_API(HGREN_INTARRAY) sol_Thesaurus(
     int Link
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || iEntry == UNKNOWN || Link == UNKNOWN)
-        return NULL;
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || iEntry == UNKNOWN || Link == UNKNOWN)
+        return nullptr;
 
 #if defined SOLARIX_PRO && defined GM_THESAURUS
     lem::MCollect<int> *list = new lem::MCollect<int>();
@@ -4026,7 +4039,7 @@ GREN_API(HGREN_INTARRAY) sol_Thesaurus(
         Tree_Link l(Link);
 
         IntCollect links;
-        HandleEngine(hEngine)->dict->GetSynGram().Get_Net().Find_Linked_Entries(ekey, l, links, NULL);
+        HandleEngine(hEngine)->dict->GetSynGram().Get_Net().Find_Linked_Entries(ekey, l, links, nullptr);
 
         for (lem::Container::size_type i = 0; i < links.size(); ++i)
         {
@@ -4039,11 +4052,11 @@ GREN_API(HGREN_INTARRAY) sol_Thesaurus(
     catch (...)
     {
         delete list;
-        return NULL;
+        return nullptr;
     }
 #endif
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -4060,7 +4073,7 @@ GREN_API(HGREN_INTARRAY) sol_Thesaurus(
 // ************************************************************************
 GREN_API(int) sol_CountNGrams(HGREN hEngine, int type, int Order, unsigned int *Hi, unsigned int *Lo)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || type < 0 || type>1 || Order < 1 || Order>5 || Hi == NULL || Lo == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || type < 0 || type>1 || Order < 1 || Order>5 || Hi == nullptr || Lo == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4105,7 +4118,7 @@ GREN_API(int) sol_CountNGrams(HGREN hEngine, int type, int Order, unsigned int *
 // http://www.solarix.ru/for_developers/api/ngrams-api.shtml
 GREN_API(int) sol_Seek1Grams(HGREN hEngine, int type, const wchar_t *word1)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || word1 == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || word1 == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4150,7 +4163,7 @@ GREN_API(int) sol_Seek2Grams(
     const wchar_t *word2
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || word1 == NULL || word2 == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || word1 == nullptr || word2 == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4206,7 +4219,7 @@ GREN_API(int) sol_Seek3Grams(
     const wchar_t *word3
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || word1 == NULL || word2 == NULL || word3 == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || word1 == nullptr || word2 == nullptr || word3 == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4265,8 +4278,8 @@ GREN_API(int) sol_Seek4Grams(
     const wchar_t *word4
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict ||
-        word1 == NULL || word2 == NULL || word3 == NULL || word4 == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict ||
+        word1 == nullptr || word2 == nullptr || word3 == nullptr || word4 == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4327,8 +4340,8 @@ GREN_API(int) sol_Seek5Grams(
     const wchar_t *word5
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict ||
-        word1 == NULL || word2 == NULL || word3 == NULL || word4 == NULL || word5 == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict ||
+        word1 == nullptr || word2 == nullptr || word3 == nullptr || word4 == nullptr || word5 == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4394,7 +4407,7 @@ GREN_API(int) sol_Seek5Grams8(
 GREN_API(int) sol_IsLanguagePhrase(HGREN hEngine, const wchar_t *Phrase, int Language)
 {
 #if defined SOLARIX_PRO
-    if (hEngine == NULL || lem::lem_is_empty(Phrase) || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || lem::lem_is_empty(Phrase) || !HandleEngine(hEngine)->dict)
         return 0;
 
 #if defined SOL_CAA
@@ -4431,7 +4444,7 @@ GREN_API(int) sol_IsLanguagePhrase(HGREN hEngine, const wchar_t *Phrase, int Lan
 GREN_API(int) sol_GuessPhraseLanguage(HGREN hEngine, const wchar_t *Phrase)
 {
 #if defined SOLARIX_PRO
-    if (hEngine == NULL || lem::lem_is_empty(Phrase) || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || lem::lem_is_empty(Phrase) || !HandleEngine(hEngine)->dict)
         return -2;
 
 #if defined SOL_CAA
@@ -4467,7 +4480,7 @@ GREN_API(int) sol_GuessPhraseLanguage(HGREN hEngine, const wchar_t *Phrase)
 // http://www.solarix.ru/api/ru/sol_FindClass.shtml
 GREN_API(int) sol_FindClass(HGREN hEngine, const wchar_t *ClassName)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || lem::lem_is_empty(ClassName))
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || lem::lem_is_empty(ClassName))
         return -2;
 
     try
@@ -4496,7 +4509,7 @@ GREN_API(int) sol_FindClass8(HGREN hEngine, const char *ClassNameUtf8)
 // http://www.solarix.ru/api/ru/sol_FindEnum.shtml
 GREN_API(int) sol_FindEnum(HGREN hEngine, const wchar_t *EnumName)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || lem::lem_is_empty(EnumName))
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || lem::lem_is_empty(EnumName))
         return -2;
 
     try
@@ -4522,7 +4535,7 @@ GREN_API(int) sol_FindEnum8(HGREN hEngine, const char *EnumNameUtf8)
 // http://www.solarix.ru/api/ru/sol_FindEnumState.shtml
 GREN_API(int) sol_FindEnumState(HGREN hEngine, int CoordID, const wchar_t *StateName)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || CoordID < 0 || lem::lem_is_empty(StateName))
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || CoordID < 0 || lem::lem_is_empty(StateName))
         return -2;
 
     try
@@ -4554,13 +4567,13 @@ GREN_API(int) sol_MatchNGrams(
 )
 {
 #if !defined SOL_NO_NGRAMS && !defined SOL_NO_AA
-    if (hEngine == NULL || !HandleEngine(hEngine)->ok || Text == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->ok || Text == nullptr)
         return -1;
 
     try
     {
         Solarix::Sentence sent;
-        sent.Parse(Text, false, HandleEngine(hEngine)->dict.get(), HandleEngine(hEngine)->DefaultLanguage, NULL);
+        sent.Parse(Text, false, HandleEngine(hEngine)->dict.get(), HandleEngine(hEngine)->DefaultLanguage, nullptr);
 
         lem::MCollect<lem::UCString> words;
         for (int i = 0; i < CastSizeToInt(sent.size()); ++i)
@@ -4593,7 +4606,7 @@ GREN_API(int) sol_Syllabs(
 )
 {
 #if !defined SOL_NO_AA
-    if (hEngine == NULL || !HandleEngine(hEngine)->ok || OrgWord == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->ok || OrgWord == nullptr)
         return -1;
 
     try
@@ -4605,7 +4618,7 @@ GREN_API(int) sol_Syllabs(
         lem::UCString word(OrgWord);
         lem::MCollect<lem::UCString> slb_list;
 
-        HandleEngine(hEngine)->dict->GetGraphGram().FindSyllabs(word, LanguageID, false, slb_list, NULL);
+        HandleEngine(hEngine)->dict->GetGraphGram().FindSyllabs(word, LanguageID, false, slb_list, nullptr);
 
         for (lem::Container::size_type i = 0; i < slb_list.size(); ++i)
         {
@@ -4666,11 +4679,11 @@ GREN_API(int) sol_Syllabs8(
 // **********************************************************
 GREN_API(HGREN_STR) sol_TokenizeW(HGREN hEngine, const wchar_t *Sentence, int LanguageID)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->ok || Sentence == NULL)
-        return NULL;
+    if (hEngine == nullptr || !HandleEngine(hEngine)->ok || Sentence == nullptr)
+        return nullptr;
 
 #if defined SOL_CAA && !defined SOL_NO_AA
-    std::auto_ptr<GREN_Strings> list(new GREN_Strings);
+    std::unique_ptr<GREN_Strings> list(new GREN_Strings);
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -4679,7 +4692,7 @@ GREN_API(HGREN_STR) sol_TokenizeW(HGREN hEngine, const wchar_t *Sentence, int La
         lem::UFString sentence(Sentence);
 
         Solarix::Sentence sent;
-        sent.Parse(sentence, false, HandleEngine(hEngine)->dict.get(), LanguageID, NULL);
+        sent.Parse(sentence, false, HandleEngine(hEngine)->dict.get(), LanguageID, nullptr);
         for (int i = 0; i < CastSizeToInt(sent.size()); ++i)
             list->list.push_back(sent.GetWord(i));
 
@@ -4688,7 +4701,7 @@ GREN_API(HGREN_STR) sol_TokenizeW(HGREN hEngine, const wchar_t *Sentence, int La
     CATCH_API(hEngine)
 #endif
 
-        return NULL;
+        return nullptr;
 }
 
 
@@ -4713,8 +4726,8 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBroker(
     int LanguageID
 )
 {
-    if (hEngine == NULL || lem::lem_is_empty(Filename))
-        return NULL;
+    if (hEngine == nullptr || lem::lem_is_empty(Filename))
+        return nullptr;
 
     try
     {
@@ -4733,7 +4746,7 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBroker(
             }
             catch (...)
             {
-                return NULL;
+                return nullptr;
             }
         }
 
@@ -4767,7 +4780,7 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBroker(
     }
     CATCH_API(hEngine)
 
-        return NULL;
+        return nullptr;
 }
 
 GREN_API(HGREN_SBROKER) sol_CreateSentenceBroker8(
@@ -4782,8 +4795,8 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBroker8(
 
 GREN_API(HGREN_SBROKER) sol_CreateSentenceBrokerMemW(HGREN hEngine, const wchar_t *Text, int LanguageID)
 {
-    if (hEngine == NULL || lem::lem_is_empty(Text))
-        return NULL;
+    if (hEngine == nullptr || lem::lem_is_empty(Text))
+        return nullptr;
 
     try
     {
@@ -4793,7 +4806,7 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBrokerMemW(HGREN hEngine, const wchar_
     }
     CATCH_API(hEngine)
 
-        return NULL;
+        return nullptr;
 }
 
 
@@ -4805,8 +4818,8 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBrokerMemA(HGREN hEngine, const char *
 
 GREN_API(HGREN_SBROKER) sol_CreateSentenceBrokerMem8(HGREN hEngine, const char *TextUtf8, int LanguageID)
 {
-    if (hEngine == NULL || lem::lem_is_empty(TextUtf8))
-        return NULL;
+    if (hEngine == nullptr || lem::lem_is_empty(TextUtf8))
+        return nullptr;
 
     try
     {
@@ -4816,7 +4829,7 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBrokerMem8(HGREN hEngine, const char *
     }
     CATCH_API(hEngine)
 
-        return NULL;
+        return nullptr;
 }
 
 
@@ -4828,7 +4841,7 @@ GREN_API(int) sol_FetchSentence(HGREN_SBROKER hBroker)
 {
     try
     {
-        if (hBroker != NULL)
+        if (hBroker != nullptr)
         {
             if (!((SentenceBroker*)hBroker)->Fetch())
                 return -1; // no more sentences is available
@@ -4849,7 +4862,7 @@ GREN_API(int) sol_GetFetchedSentenceLen(HGREN_SBROKER hBroker)
 {
     try
     {
-        if (hBroker != NULL)
+        if (hBroker != nullptr)
         {
             return ((SentenceBroker*)hBroker)->GetFetchedSentence().length();
         }
@@ -4866,7 +4879,7 @@ GREN_API(int) sol_GetFetchedSentenceW(HGREN_SBROKER hBroker, wchar_t *Buffer)
 {
     try
     {
-        if (hBroker != NULL && Buffer != NULL)
+        if (hBroker != nullptr && Buffer != nullptr)
         {
             lem::lem_strcpy(Buffer, ((SentenceBroker*)hBroker)->GetFetchedSentence().c_str());
             return ((SentenceBroker*)hBroker)->GetFetchedSentence().length();
@@ -4884,7 +4897,7 @@ GREN_API(int) sol_GetFetchedSentenceA(HGREN_SBROKER hBroker, char *Buffer)
 {
     try
     {
-        if (hBroker != NULL && Buffer != NULL)
+        if (hBroker != nullptr && Buffer != nullptr)
         {
             lem::lem_strcpy(Buffer, lem::to_ascii(((SentenceBroker*)hBroker)->GetFetchedSentence()).c_str());
             return lem::lem_strlen(Buffer);
@@ -4902,7 +4915,7 @@ GREN_API(int) sol_GetFetchedSentence8(HGREN_SBROKER hBroker, char *BufferUtf8)
 {
     try
     {
-        if (hBroker != NULL && BufferUtf8 != NULL)
+        if (hBroker != nullptr && BufferUtf8 != nullptr)
         {
             lem::lem_strcpy(BufferUtf8, lem::to_utf8(((SentenceBroker*)hBroker)->GetFetchedSentence()).c_str());
             return lem::lem_strlen(BufferUtf8);
@@ -4948,7 +4961,7 @@ GREN_API(int) sol_Bits(void)
 // http://www.solarix.ru/api/en/sol_FindLanguage.shtml
 GREN_API(int) sol_FindLanguage(HGREN hEngine, const wchar_t *LanguageName)
 {
-    if (hEngine == NULL || lem::lem_is_empty(LanguageName))
+    if (hEngine == nullptr || lem::lem_is_empty(LanguageName))
         return -1;
 
     try
@@ -4977,7 +4990,7 @@ GREN_API(int) sol_FindLanguage8(HGREN hEngine, const char *LanguageNameUtf8)
 // **********************************
 GREN_API(int) sol_GetNodeCoordState(HGREN_TREENODE hNode, int CoordID)
 {
-    if (hNode == NULL || CoordID == -1)
+    if (hNode == nullptr || CoordID == -1)
         return -1;
 
     try
@@ -4998,7 +5011,7 @@ GREN_API(int) sol_GetNodeCoordState(HGREN_TREENODE hNode, int CoordID)
 // *******************************************
 GREN_API(int) sol_GetNodeVerCoordState(HGREN_TREENODE hNode, int iver, int CoordID)
 {
-    if (hNode == NULL || CoordID == -1)
+    if (hNode == nullptr || CoordID == -1)
         return -1;
 
     try
@@ -5026,7 +5039,7 @@ GREN_API(int) sol_GetNodeVerCoordState(HGREN_TREENODE hNode, int iver, int Coord
 // http://www.solarix.ru/api/ru/sol_GetNodeCoordPair.shtml
 GREN_API(int) sol_GetNodeCoordPair(HGREN_TREENODE hNode, int CoordID, int StateID)
 {
-    if (hNode == NULL || CoordID == -1 || StateID == -1)
+    if (hNode == nullptr || CoordID == -1 || StateID == -1)
         return 0;
 
     bool res = HandleNode(hNode)->GetNode().GetPairs().FindOnce(Solarix::GramCoordPair(CoordID, StateID)) != UNKNOWN;
@@ -5037,7 +5050,7 @@ GREN_API(int) sol_GetNodeCoordPair(HGREN_TREENODE hNode, int CoordID, int StateI
 // http://www.solarix.ru/api/ru/sol_GetNodeVerCoordPair.shtml
 GREN_API(int) sol_GetNodeVerCoordPair(HGREN_TREENODE hNode, int iver, int CoordID, int StateID)
 {
-    if (hNode == NULL || CoordID == -1 || StateID == -1)
+    if (hNode == nullptr || CoordID == -1 || StateID == -1)
         return 0;
 
     bool res;
@@ -5054,7 +5067,7 @@ GREN_API(int) sol_GetNodeVerCoordPair(HGREN_TREENODE hNode, int iver, int CoordI
 // http://www.solarix.ru/api/ru/sol_GetNodePairsCount.shtml
 GREN_API(int) sol_GetNodePairsCount(HGREN_TREENODE hNode)
 {
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return -1;
 
     return CastSizeToInt(HandleNode(hNode)->GetNode().GetPairs().size());
@@ -5064,7 +5077,7 @@ GREN_API(int) sol_GetNodePairsCount(HGREN_TREENODE hNode)
 // http://www.solarix.ru/api/ru/sol_GetNodeVerPairsCount.shtml
 GREN_API(int) sol_GetNodeVerPairsCount(HGREN_TREENODE hNode, int iver)
 {
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return -1;
 
     if (iver == 0)
@@ -5077,7 +5090,7 @@ GREN_API(int) sol_GetNodeVerPairsCount(HGREN_TREENODE hNode, int iver)
 // http://www.solarix.ru/api/ru/sol_GetNodePairCoord.shtml
 GREN_API(int) sol_GetNodePairCoord(HGREN_TREENODE hNode, int ipair)
 {
-    if (hNode == NULL || ipair < 0 || ipair >= CastSizeToInt(HandleNode(hNode)->GetNode().GetPairs().size()))
+    if (hNode == nullptr || ipair < 0 || ipair >= CastSizeToInt(HandleNode(hNode)->GetNode().GetPairs().size()))
         return -1;
 
     return HandleNode(hNode)->GetNode().GetPairs()[ipair].GetCoord().GetIndex();
@@ -5087,7 +5100,7 @@ GREN_API(int) sol_GetNodePairCoord(HGREN_TREENODE hNode, int ipair)
 // http://www.solarix.ru/api/ru/sol_GetNodeVerPairCoord.shtml
 GREN_API(int) sol_GetNodeVerPairCoord(HGREN_TREENODE hNode, int iver, int ipair)
 {
-    if (hNode == NULL || ipair < 0)
+    if (hNode == nullptr || ipair < 0)
         return -1;
 
     if (iver == 0)
@@ -5110,7 +5123,7 @@ GREN_API(int) sol_GetNodeVerPairCoord(HGREN_TREENODE hNode, int iver, int ipair)
 // http://www.solarix.ru/api/ru/sol_GetNodePairState.shtml
 GREN_API(int) sol_GetNodePairState(HGREN_TREENODE hNode, int ipair)
 {
-    if (hNode == NULL || ipair < 0 || ipair >= CastSizeToInt(HandleNode(hNode)->GetNode().GetPairs().size()))
+    if (hNode == nullptr || ipair < 0 || ipair >= CastSizeToInt(HandleNode(hNode)->GetNode().GetPairs().size()))
         return -1;
 
     return HandleNode(hNode)->GetNode().GetPairs()[ipair].GetState();
@@ -5120,7 +5133,7 @@ GREN_API(int) sol_GetNodePairState(HGREN_TREENODE hNode, int ipair)
 // http://www.solarix.ru/api/ru/sol_GetNodeVerPairState.shtml
 GREN_API(int) sol_GetNodeVerPairState(HGREN_TREENODE hNode, int iver, int ipair)
 {
-    if (hNode == NULL || ipair < 0)
+    if (hNode == nullptr || ipair < 0)
         return -1;
 
     if (iver == 0)
@@ -5148,7 +5161,7 @@ GREN_API(int) sol_GenerateWordform(
     wchar_t *Result
 )
 {
-    if (hEng == NULL || ie == UNKNOWN)
+    if (hEng == nullptr || ie == UNKNOWN)
     {
         return -1;
     }
@@ -5198,9 +5211,9 @@ GREN_API(HGREN_STR) sol_GenerateWordforms(
     const int *pairs
 )
 {
-    if (hEngine == NULL || EntryID == UNKNOWN)
+    if (hEngine == nullptr || EntryID == UNKNOWN)
     {
-        return NULL;
+        return nullptr;
     }
 
     DEMO_SINGLE_THREAD(hEngine)
@@ -5228,7 +5241,7 @@ GREN_API(HGREN_STR) sol_GenerateWordforms(
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -5239,7 +5252,7 @@ GREN_API(HGREN_STR) sol_GenerateWordforms(
 
 GREN_API(int) sol_CountLexems(HGREN hEng)
 {
-    if (hEng == NULL)
+    if (hEng == nullptr)
     {
         return -1;
     }
@@ -5270,9 +5283,9 @@ struct MatchingParadigma : lem::NonCopyable
 
 GREN_API(HFLEXIONS) sol_FindFlexionHandlers(HGREN hEngine, const wchar_t *WordBasicForm, int Flags)
 {
-    if (hEngine == NULL && lem::lem_is_empty(WordBasicForm))
+    if (hEngine == nullptr && lem::lem_is_empty(WordBasicForm))
     {
-        return NULL;
+        return nullptr;
     }
 
     try
@@ -5302,16 +5315,16 @@ GREN_API(HFLEXIONS) sol_FindFlexionHandlers(HGREN hEngine, const wchar_t *WordBa
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
 // Flexion engine: return the number of matching entries
 GREN_API(int) sol_CountEntriesInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs)
 {
-    if (hEng == NULL && hFlexs == NULL)
+    if (hEng == nullptr && hFlexs == nullptr)
     {
-        return NULL;
+        return -1;
     }
 
     try
@@ -5328,9 +5341,9 @@ GREN_API(int) sol_CountEntriesInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs)
 // Flexion engine: return the number of matching paradigmas
 GREN_API(int) sol_CountParadigmasInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs)
 {
-    if (hEng == NULL && hFlexs == NULL)
+    if (hEng == nullptr && hFlexs == nullptr)
     {
-        return NULL;
+        return -1;
     }
 
     try
@@ -5348,9 +5361,9 @@ GREN_API(int) sol_CountParadigmasInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs)
 // Flexion engine: return the entry ID
 GREN_API(int) sol_GetEntryInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs, int Index)
 {
-    if (hEng == NULL && hFlexs == NULL)
+    if (hEng == nullptr && hFlexs == nullptr)
     {
-        return NULL;
+        return -1;
     }
 
     try
@@ -5368,16 +5381,16 @@ GREN_API(int) sol_GetEntryInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs, int In
 // Flexion engine: return the paradigma internal index and human-friendly name
 GREN_API(int) sol_GetParadigmaInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs, int Index, wchar_t *ParadigmaName)
 {
-    if (hEng == NULL && hFlexs == NULL)
+    if (hEng == nullptr && hFlexs == nullptr)
     {
-        return NULL;
+        return -1;
     }
 
     try
     {
         const MatchingParadigma *x = (const MatchingParadigma*)hFlexs;
 
-        if (ParadigmaName != NULL)
+        if (ParadigmaName != nullptr)
             lem::lem_strcpy(ParadigmaName, x->paradigmas[Index].c_str());
 
         return x->iparadigmas[Index];
@@ -5404,9 +5417,9 @@ GREN_API(HFLEXIONTABLE) sol_BuildFlexionHandler(
     int EntryIndex
 )
 {
-    if (hEng == NULL && (hFlexs == NULL && !lem::lem_is_empty(ParadigmaName)))
+    if (hEng == nullptr && (hFlexs == nullptr && !lem::lem_is_empty(ParadigmaName)))
     {
-        return NULL;
+        return nullptr;
     }
 
     try
@@ -5449,7 +5462,7 @@ GREN_API(HFLEXIONTABLE) sol_BuildFlexionHandler(
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -5457,7 +5470,7 @@ GREN_API(int) sol_CountFlexionHandlerWordform(HGREN hEngine, HFLEXIONTABLE hFlex
 {
     try
     {
-        if (hFlex == NULL)
+        if (hFlex == nullptr)
             return 0;
 
         const FlexionTable *table = (const FlexionTable*)hFlex;
@@ -5472,7 +5485,7 @@ GREN_API(const wchar_t*) sol_GetFlexionHandlerWordformText(HGREN hEngine, HFLEXI
 {
     try
     {
-        if (hFlex == NULL)
+        if (hFlex == nullptr)
             return 0;
 
         const FlexionTable *table = (const FlexionTable*)hFlex;
@@ -5480,7 +5493,7 @@ GREN_API(const wchar_t*) sol_GetFlexionHandlerWordformText(HGREN hEngine, HFLEXI
     }
     CATCH_API(hEngine);
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -5575,7 +5588,7 @@ GREN_API(const wchar_t*) sol_GetFlexionHandlerWordform(
     }
     CATCH_API(hEng);
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -5620,7 +5633,7 @@ GREN_API(int) sol_DeleteFlexionHandler(HGREN hEng, HFLEXIONTABLE hFlex)
 // ******************************************************************
 GREN_API(int) sol_FindPhrase(HGREN hEngine, const wchar_t *Phrase, int Flags)
 {
-    if (hEngine == NULL || lem::lem_is_empty(Phrase))
+    if (hEngine == nullptr || lem::lem_is_empty(Phrase))
         return -2;
 
     try
@@ -5675,7 +5688,7 @@ GREN_API(HLINKSINFO) sol_ListLinksTxt(
     int Flags
 )
 {
-    LinksInfo * res = NULL;
+    LinksInfo * res = nullptr;
 
 #if !defined SOLARIX_DEMO
     try
@@ -5698,7 +5711,7 @@ GREN_API(HLINKSINFO) sol_ListLinksTxt(
                 li->id = links->GetLinkId();
                 li->code = links->GetLinkType();
                 li->ekey1 = ie1;
-                li->ekey2 = links->GetEntryKey2();//sg.FindEntryIndexByKey( links->GetEntryKey2() );
+                li->ekey2 = links->GetEntryKey2();
 
 #if defined SOL_SAVETXT
                 Solarix::PrintTags(links->GetTags(), li->tags_txt, sg);
@@ -5720,7 +5733,7 @@ GREN_API(HLINKSINFO) sol_ListLinksTxt(
 
             for (lem::Container::size_type i = 0; i < tl_id.size(); ++i)
             {
-                lem::Ptr<SG_ComplexLink> lnk = th.GetComplexLink(tl_id[i]);
+                std::unique_ptr<SG_ComplexLink> lnk(th.GetComplexLink(tl_id[i]));
 
                 SG_Phrase frz;
                 sg.GetStorage().GetPhrase(te_id[i], frz);
@@ -5753,7 +5766,7 @@ GREN_API(HLINKSINFO) sol_ListLinksTxt(
     CATCH_API(hEngine);
 #endif
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -5762,7 +5775,7 @@ GREN_API(int) sol_DeleteLinksInfo(HGREN hEng, HLINKSINFO hList)
 {
     try
     {
-        if (hList != NULL)
+        if (hList != nullptr)
         {
             delete (LinksInfo*)hList;
         }
@@ -5781,7 +5794,7 @@ GREN_API(int) sol_LinksInfoCount(HGREN hEngine, HLINKSINFO hList)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return 0;
 
         return CastSizeToInt(((LinksInfo*)hList)->size());
@@ -5799,7 +5812,7 @@ GREN_API(int) sol_LinksInfoType(HGREN hEngine, HLINKSINFO hList, int Index)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return -1;
 
         const LinksInfo& list = *(LinksInfo*)hList;
@@ -5817,7 +5830,7 @@ GREN_API(int) sol_LinksInfoCode(HGREN hEngine, HLINKSINFO hList, int Index)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return -1;
 
         const LinksInfo& list = *(LinksInfo*)hList;
@@ -5836,7 +5849,7 @@ GREN_API(int) sol_LinksInfoID(HGREN hEngine, HLINKSINFO hList, int Index)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return -1;
 
         const LinksInfo& list = *(LinksInfo*)hList;
@@ -5855,7 +5868,7 @@ GREN_API(int) sol_LinksInfoEKey1(HGREN hEngine, HLINKSINFO hList, int Index)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return -1;
 
         const LinksInfo& list = *(LinksInfo*)hList;
@@ -5874,7 +5887,7 @@ GREN_API(int) sol_LinksInfoEKey2(HGREN hEngine, HLINKSINFO hList, int Index)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return -1;
 
         const LinksInfo& list = *(LinksInfo*)hList;
@@ -5889,7 +5902,7 @@ GREN_API(int) sol_LinksInfoEKey2(HGREN hEngine, HLINKSINFO hList, int Index)
 
 // ********************************************************************
 // Возвращается текстовое представление тегов для связи в списке.
-// Если тегов у связи нет, то вернет NULL.
+// Если тегов у связи нет, то вернет nullptr.
 // ********************************************************************
 GREN_API(const wchar_t*) sol_LinksInfoTagsTxt(
     HGREN hEngine,
@@ -5899,15 +5912,15 @@ GREN_API(const wchar_t*) sol_LinksInfoTagsTxt(
 {
     try
     {
-        if (hList == NULL)
-            return NULL;
+        if (hList == nullptr)
+            return nullptr;
 
         const LinksInfo& list = *(LinksInfo*)hList;
         return list[Index]->tags_txt.c_str();
     }
     CATCH_API(hEngine);
 
-    return NULL;
+    return nullptr;
 }
 
 GREN_API(const char*) sol_LinksInfoTagsTxt8(
@@ -5918,8 +5931,8 @@ GREN_API(const char*) sol_LinksInfoTagsTxt8(
 {
     try
     {
-        if (hList == NULL)
-            return NULL;
+        if (hList == nullptr)
+            return nullptr;
 
         LinksInfo& list = *(LinksInfo*)hList;
 
@@ -5936,12 +5949,12 @@ GREN_API(const char*) sol_LinksInfoTagsTxt8(
     }
     CATCH_API(hEngine);
 
-    return NULL;
+    return nullptr;
 }
 
 // ********************************************************************
 // Возвращается текстовое представление списка флагов для связи.
-// Если тегов у связи нет, то вернет NULL.
+// Если тегов у связи нет, то вернет nullptr.
 // ********************************************************************
 GREN_API(const char*) sol_LinksInfoFlagsTxt8(
     HGREN hEngine,
@@ -5951,8 +5964,8 @@ GREN_API(const char*) sol_LinksInfoFlagsTxt8(
 {
     try
     {
-        if (hList == NULL)
-            return NULL;
+        if (hList == nullptr)
+            return nullptr;
 
         LinksInfo& list = *(LinksInfo*)hList;
 
@@ -5967,8 +5980,9 @@ GREN_API(const char*) sol_LinksInfoFlagsTxt8(
         return list[Index]->flags8.c_str();
     }
     CATCH_API(hEngine);
-    return NULL;
+    return nullptr;
 }
+
 
 GREN_API(const wchar_t*) sol_LinksInfoFlagsTxt(
     HGREN hEngine,
@@ -5978,14 +5992,14 @@ GREN_API(const wchar_t*) sol_LinksInfoFlagsTxt(
 {
     try
     {
-        if (hList == NULL)
-            return NULL;
+        if (hList == nullptr)
+            return nullptr;
 
         const LinksInfo& list = *(LinksInfo*)hList;
         return list[Index]->flags.c_str();
     }
     CATCH_API(hEngine);
-    return NULL;
+    return nullptr;
 }
 
 
@@ -6047,7 +6061,7 @@ GREN_API(int) sol_AddLink(
     const wchar_t *Tags
 )
 {
-    if (hEngine == NULL || IE1 == UNKNOWN || IE2 == UNKNOWN)
+    if (hEngine == nullptr || IE1 == UNKNOWN || IE2 == UNKNOWN)
         return -2;
 
     try
@@ -6102,7 +6116,7 @@ GREN_API(int) sol_SetLinkFlags(
     const wchar_t *Flags
 )
 {
-    if (hEngine == NULL || id_link == UNKNOWN)
+    if (hEngine == nullptr || id_link == UNKNOWN)
         return -2;
 
     try
@@ -6123,10 +6137,10 @@ GREN_API(int) sol_SetLinkFlags(
             lem::Collect< lem::UFString > pairs;
             lem::parse(str, pairs, L" ");
 
-            for (lem::Container::size_type i = 0; i < pairs.size(); ++i)
+            for (auto& pair : pairs)
             {
                 lem::Collect<lem::UFString> toks;
-                lem::parse(pairs[i], toks, L"=");
+                lem::parse(pair, toks, L"=");
                 const lem::UFString &flag = toks[0];
                 const lem::UFString &val = toks[1];
                 SG_LinkFlag x(UNKNOWN, flag, val);
@@ -6164,7 +6178,7 @@ GREN_API(int) sol_SetLinkTags(
     const wchar_t *Tags
 )
 {
-    if (hEngine == NULL || link_id == -1)
+    if (hEngine == nullptr || link_id == -1)
         return -2;
 
     try
@@ -6217,8 +6231,8 @@ GREN_API(int) sol_SetLinkTags8(
 // *********************************************************
 GREN_API(wchar_t*) sol_GetPhraseText(HGREN hEngine, int PhraseId)
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN)
-        return NULL;
+    if (hEngine == nullptr || PhraseId == UNKNOWN)
+        return nullptr;
 
     try
     {
@@ -6226,19 +6240,19 @@ GREN_API(wchar_t*) sol_GetPhraseText(HGREN hEngine, int PhraseId)
         SynGram &sg = HandleEngine(hEngine)->dict->GetSynGram();
         if (sg.GetStorage().GetPhrase(PhraseId, f))
         {
-            const int len = f.GetText().length();
+            const size_t len = f.GetText().length();
             wchar_t *str = (wchar_t*)malloc(sizeof(wchar_t)*(len + 1));
             lem::lem_strcpy(str, f.GetText().c_str());
             return str;
         }
         else
         {
-            return NULL;
+            return nullptr;
         }
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -6247,8 +6261,8 @@ GREN_API(wchar_t*) sol_GetPhraseText(HGREN hEngine, int PhraseId)
 // http://www.solarix.ru/api/en/sol_GetPhraseText.shtml
 GREN_API(char*) sol_GetPhraseText8(HGREN hEngine, int PhraseId)
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN)
-        return NULL;
+    if (hEngine == nullptr || PhraseId == UNKNOWN)
+        return nullptr;
 
     try
     {
@@ -6257,19 +6271,19 @@ GREN_API(char*) sol_GetPhraseText8(HGREN hEngine, int PhraseId)
         if (sg.GetStorage().GetPhrase(PhraseId, f))
         {
             lem::FString utf8 = to_utf8(f.GetText());
-            const int len = utf8.length();
+            const size_t len = utf8.length();
             char *str = (char*)malloc(len + 1);
             lem::lem_strcpy(str, utf8.c_str());
             return str;
         }
         else
         {
-            return NULL;
+            return nullptr;
         }
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -6277,8 +6291,8 @@ GREN_API(char*) sol_GetPhraseText8(HGREN hEngine, int PhraseId)
 // http://www.solarix.ru/api/en/sol_GetPhraseLanguage.shtml
 GREN_API(int) sol_GetPhraseLanguage(HGREN hEngine, int PhraseId)
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN)
-        return NULL;
+    if (hEngine == nullptr || PhraseId == UNKNOWN)
+        return -1;
 
     try
     {
@@ -6302,8 +6316,8 @@ GREN_API(int) sol_GetPhraseLanguage(HGREN hEngine, int PhraseId)
 // http://www.solarix.ru/api/en/sol_GetPhraseClass.shtml
 GREN_API(int) sol_GetPhraseClass(HGREN hEngine, int PhraseId)
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN)
-        return NULL;
+    if (hEngine == nullptr || PhraseId == UNKNOWN)
+        return -1;
 
     try
     {
@@ -6330,7 +6344,7 @@ GREN_API(int) sol_GetPhraseClass(HGREN hEngine, int PhraseId)
 // http://www.solarix.ru/api/en/sol_AddPhrase.shtml
 GREN_API(int) sol_AddPhrase(HGREN hEngine, const wchar_t *Phrase, int LanguageID, int ClassID, int Flags)
 {
-    if (hEngine == NULL || lem::lem_is_empty(Phrase))
+    if (hEngine == nullptr || lem::lem_is_empty(Phrase))
         return -2;
 
     try
@@ -6363,7 +6377,7 @@ GREN_API(int) sol_AddPhrase8(HGREN hEngine, const char *Phrase, int Language, in
 // http://www.solarix.ru/api/en/sol_DeletePhrase.shtml
 GREN_API(int) sol_DeletePhrase(HGREN hEngine, int PhraseId)
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN)
+    if (hEngine == nullptr || PhraseId == UNKNOWN)
         return -2;
 
     int res = -1;
@@ -6393,7 +6407,7 @@ GREN_API(int) sol_SetPhraseNote(
     const wchar_t *Value
 )
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN || lem::lem_is_empty(Name))
+    if (hEngine == nullptr || PhraseId == UNKNOWN || lem::lem_is_empty(Name))
         return -2;
 
     try
@@ -6449,7 +6463,7 @@ GREN_API(int) sol_ProcessPhraseEntry(
     wchar_t DelimiterChar
 )
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN || lem::lem_is_empty(Scenario))
+    if (hEngine == nullptr || PhraseId == UNKNOWN || lem::lem_is_empty(Scenario))
         return -2;
 
     try
@@ -6549,8 +6563,8 @@ GREN_API(HGREN_INTARRAY) sol_ListEntries(
     int Class
 )
 {
-    if (hEngine == NULL)
-        return NULL;
+    if (hEngine == nullptr)
+        return nullptr;
 
 #if !defined SOLARIX_DEMO
     try
@@ -6657,10 +6671,10 @@ GREN_API(HGREN_INTARRAY) sol_ListEntries(
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -6681,7 +6695,7 @@ GREN_API(HGREN_INTARRAY) sol_ListEntries8(
 
 GREN_API(int) sol_SaveDictionary(HGREN hEngine, int Flags, const wchar_t *Folder)
 {
-    if (hEngine == NULL)
+    if (hEngine == nullptr)
         return -1;
 
 #if defined SOL_SAVEBIN && !defined SOLARIX_DEMO
@@ -6696,7 +6710,7 @@ GREN_API(int) sol_SaveDictionary(HGREN hEngine, int Flags, const wchar_t *Folder
 
             lem::Path db_file;
             const lem::Xml::Node * nod = p.Find_By_Path(L"dataroot.morphology");
-            if (nod != NULL && nod->GetBody().empty() == false)
+            if (nod != nullptr && nod->GetBody().empty() == false)
             {
                 db_file = lem::lem_is_empty(Folder) ? HandleEngine(hEngine)->dict->xml_base_path : lem::Path(Folder);
                 db_file.ConcateLeaf(lem::Path(nod->GetBody()));
@@ -6719,7 +6733,7 @@ GREN_API(int) sol_SaveDictionary(HGREN hEngine, int Flags, const wchar_t *Folder
 
 GREN_API(int) sol_ReserveLexiconSpace(HGREN hEngine, int n)
 {
-    if (hEngine == NULL || n < 1)
+    if (hEngine == nullptr || n < 1)
         return -1;
 
     try
@@ -6764,7 +6778,7 @@ GREN_API(HGREN_INTARRAY) sol_ListPartsOfSpeech(HGREN hEngine, int Language)
     }
     CATCH_API(hEngine);
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -6787,7 +6801,7 @@ GREN_API(int) sol_GetEntryFreq(HGREN hEngine, int EntryID)
 
 GREN_API(int) sol_FindTagW(HGREN hEngine, const wchar_t *TagName)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || lem::lem_is_empty(TagName))
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || lem::lem_is_empty(TagName))
         return -2;
 
     try
@@ -6805,7 +6819,7 @@ GREN_API(int) sol_FindTagW(HGREN hEngine, const wchar_t *TagName)
 
 GREN_API(int) sol_FindTagValueW(HGREN hEngine, int TagID, const wchar_t *ValueName)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || lem::lem_is_empty(ValueName))
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || lem::lem_is_empty(ValueName))
         return -2;
 
     try
@@ -6836,12 +6850,12 @@ GREN_API(HGREN_SPOKEN) sol_PronounceW(HGREN hEngine, const wchar_t * Sentence, i
 
 #endif
 
-        return NULL;
+        return nullptr;
     }
     CATCH_API(hEngine);
 
-    return NULL;
-    }
+    return nullptr;
+}
 
 
 GREN_API(int) sol_DeleteSpoken(HGREN_SPOKEN hData)
@@ -6860,8 +6874,8 @@ GREN_API(int) sol_DeleteSpoken(HGREN_SPOKEN hData)
 
 GREN_API(const char*) sol_RenderSyntaxTree8(HGREN hEngine, HGREN_RESPACK hSyntaxTree, int RenderOptions)
 {
-    if (hSyntaxTree == NULL)
-        return NULL;
+    if (hSyntaxTree == nullptr)
+        return nullptr;
 
     const Res_Pack * pack = (const Solarix::Res_Pack*)hSyntaxTree;
 
@@ -6896,7 +6910,7 @@ GREN_API(int) sol_WriteSyntaxTree(HGREN hEngine, void * file_handle, const wchar
     int guard = 0xdeadbeef;
     file.write(&guard, sizeof(guard));
 
-    int str_len = wcslen(sentence);
+    size_t str_len = wcslen(sentence);
     file.write(&str_len, sizeof(str_len));
     file.write(sentence, sizeof(wchar_t)*(str_len + 1));
 
@@ -6912,7 +6926,7 @@ struct SyntaxTreeStreamData
     Solarix::Res_Pack * pack;
     wchar_t * sentence;
 
-    SyntaxTreeStreamData() : pack(NULL), sentence(NULL) {}
+    SyntaxTreeStreamData() : pack(nullptr), sentence(nullptr) {}
     ~SyntaxTreeStreamData()
     {
         delete pack;
@@ -6931,7 +6945,7 @@ GREN_API(void*) sol_LoadSyntaxTree(HGREN hEngine, void * file_handle)
     file.read(&str_len, sizeof(str_len));
 
     if (file.eof())
-        return NULL;
+        return nullptr;
 
     SyntaxTreeStreamData * data = new SyntaxTreeStreamData();
 
@@ -7055,7 +7069,6 @@ GREN_API(HGREN_TREENODE) sol_CreateTreeNodeW(HGREN hEngine, int id_entry, const 
 
     return node;
 }
-
 
 
 #endif

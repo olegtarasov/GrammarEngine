@@ -37,19 +37,19 @@ using namespace Solarix;
 
 Sentence::Sentence(void) : id_language(UNKNOWN)
 {
-	return;
+ return;
 }
 
 Sentence::Sentence(const Sentence &x)
-	: words(x.words), org_phrase(x.org_phrase), id_language(x.id_language)
+ : words(x.words), org_phrase(x.org_phrase), id_language(x.id_language)
 {}
 
 void Sentence::operator=(const Sentence &x)
 {
-	org_phrase = x.org_phrase;
-	id_language = x.id_language;
-	words = x.words;
-	return;
+ org_phrase = x.org_phrase;
+ id_language = x.id_language;
+ words = x.words;
+ return;
 }
 
 
@@ -58,10 +58,10 @@ void Sentence::operator=(const Sentence &x)
 void Sentence::AddWord(const lem::UCString & word)
 {
 	LEM_CHECKIT_Z(!word.empty());
-	SentenceWord * x = new SentenceWord();
-	x->word = word;
+ SentenceWord * x = new SentenceWord();
+ x->word = word;
 	words.push_back(x);
-	return;
+ return;
 }
 
 
@@ -69,318 +69,318 @@ void Sentence::AddWord(const lem::UCString & word)
 // –азбиваем предложение на слова.
 // ***********************************
 void Sentence::Parse(
-	const lem::UFString & str_buffer,
-	bool Pretokenized,
-	Dictionary * dict,
-	int _id_language,
-	TrTrace * trace
+                     const lem::UFString & str_buffer,
+                     bool Pretokenized,
+                     Dictionary * dict,
+                     int _id_language,
+                     TrTrace * trace
 )
 {
-	org_phrase = str_buffer;
+ org_phrase = str_buffer;
 
 	if (Pretokenized)
-	{
-		const int l = org_phrase.length();
+  {
+   const int l = org_phrase.length();
 
-		UCString word;
+   UCString word;
 		int i = 0;
 		while (i < l)
-		{
-			wchar_t c = org_phrase[i];
+    {
+     wchar_t c = org_phrase[i];
 
 			if (c == L'\x1F')
-			{
+      {
 				if (!word.empty())
-				{
+        {
 					AddWord(word);
-					word.clear();
-				}
-			}
-			else
-			{
+         word.clear();
+        }
+      }
+     else
+      {
 				word += c;
-				i++;
-			}
-		}
+       i++;
+      }
+    }
 
-		// ѕоследнее слово терминируетс€ концом строки
+   // ѕоследнее слово терминируетс€ концом строки
 		if (!word.empty())
-		{
+    {
 			AddWord(word);
-		}
+    }
 
-		return;
-	}
+   return;
+  }
 
 	if (dict != NULL)
-	{
-		Solarix::TextRecognitionParameters params;
-		params.SetLanguageID(_id_language);
+  {
+   Solarix::TextRecognitionParameters params;
+   params.SetLanguageID(_id_language);
 
 		if (params.LanguageUnknown())
-		{
-			// язык предложени€ не задан €вно, определим его на основе статистических критериев.
+    {
+     // язык предложени€ не задан €вно, определим его на основе статистических критериев.
 			const int id_language = dict->GetLexAuto().GuessLanguage(str_buffer);
 
 			if (id_language == UNKNOWN)
-			{
-				lem::MemFormatter msg;
+      {
+       lem::MemFormatter msg;
 				msg.printf("Can not guess the language of the phrase [%us]", str_buffer.c_str());
-				throw E_BaseException(msg.string());
-			}
+       throw E_BaseException(msg.string());
+      }
 
 			params.SetLanguageID(id_language);
 
 			if (trace != NULL)
-			{
+      {
 				trace->LanguageGuessed(str_buffer, id_language);
-			}
-		}
+      }
+    }
 
-		params.RecognizeWordforms = false;
+   params.RecognizeWordforms = false;
 
 		WrittenTextLexer lexer(str_buffer, params, dict, trace);
-		lem::MCollect<const LexerTextPos*> ends;
+   lem::MCollect<const LexerTextPos*> ends;
 		lexer.FetchEnds(lexer.GetBeginToken(), ends, lexer.GetParams().GetMaxRightLeaves());
 
 		if (!ends.empty())
-		{
-			lem::MCollect<const LexerTextPos*> inverted_path;
+    {
+     lem::MCollect<const LexerTextPos*> inverted_path;
 			ends.front()->Collect_Right2Left(lexer.GetBeginToken(), inverted_path);
 
 			for (int i = CastSizeToInt(inverted_path.size()) - 2; i >= 1; --i)
-			{
-				SentenceWord * word = new SentenceWord();
+      {
+       SentenceWord * word = new SentenceWord();
 				word->word = *inverted_path[i]->GetWordform()->GetName();
 				word->normalized_word = *inverted_path[i]->GetWordform()->GetNormalized();
-				words.push_back(word);
-			}
-		}
+       words.push_back(word);
+      }
+    }
 
-		id_language = lexer.GetParams().GetLanguageID();
+   id_language = lexer.GetParams().GetLanguageID();
 
-		return;
-	}
+   return;
+  }
 
 	if (_id_language != UNKNOWN)
-		id_language = _id_language;
+  id_language = _id_language;
 
 	if (dict != NULL && id_language == UNKNOWN)
-	{
+  {
 		if (id_language == UNKNOWN)
-		{
-			// ѕопробуем определить €зык по статистическим критери€м.
-			id_language = dict->GetLexAuto().GuessLanguage(org_phrase);
+    {
+     // ѕопробуем определить €зык по статистическим критери€м.
+     id_language = dict->GetLexAuto().GuessLanguage(org_phrase);
 
 			if (trace != NULL)
 				trace->LanguageGuessed(org_phrase, id_language);
-		}
-	}
+    }
+  }
 
 
-	// ѕробелы и некоторые знаки €вл€ютс€ естественными разделител€ми.
-	const int l = org_phrase.length();
+ // ѕробелы и некоторые знаки €вл€ютс€ естественными разделител€ми.
+ const int l = org_phrase.length();
 
-	UCString word;
+ UCString word;
 	int i = 0;
 	while (i < l)
-	{
-		wchar_t c = org_phrase[i];
+  {
+   wchar_t c = org_phrase[i];
 
 		if (lem::is_uspace(c)) // могут быть вс€кие хитрые UNICODE-пробелы половинной длины и т.д.
-			c = L' ';
+    c = L' ';
 
 		const bool delimiter = lem::is_udelim(c) || c == L' ';
 
 		if (delimiter)
-		{
+    {
 			switch (c)
-			{
-			case L' ':
+     {
+      case L' ':
 			case L'\r':
-			case L'\n':
-			case L'\t':
-			{
+      case L'\n':
+      case L'\t':
+       {
 				if (!word.empty())
-				{
+         {
 					AddWord(word);
-					word.clear();
-				}
+          word.clear();
+         }
 
-				i++;
+        i++;
 				while (i < l)
-				{
-					c = org_phrase[i];
-					// ѕробелы пропускаем
+        {
+         c = org_phrase[i];
+         // ѕробелы пропускаем
 					if (c == L' ' || c == L'\r' || c == L'\n')
-						i++;
-					else
+          i++;
+         else
 						break;
-				}
+        }
 
-				break;
-			}
+        break;
+       }
 
-			case L'.':
-			case L'!':
-			case L'?':
-			{
-				// “очке - особый подход
+      case L'.':
+      case L'!':
+      case L'?':
+       {
+        // “очке - особый подход
 				if (c == L'.')
-				{
-					// ¬ конце предложени€?
+         {
+          // ¬ конце предложени€?
 					bool eol = true;
 					UCString dot; dot = c;
 
-					i++;
+          i++;
 					while (i < l)
-					{
-						wchar_t c2 = org_phrase[i];
+           {
+            wchar_t c2 = org_phrase[i];
 						if (lem::is_uspace(c2))
 							c2 = L' ';
 
 						if (c2 == L'\r' || c2 == L'\n' || c2 == L' ' || c2 == '\t')
-							break;
+             break;
 
 						if (c2 != L'.')
-						{
+             {
 							eol = false;
 							break;
-						}
+             }
 
-						dot += c2;
-						i++;
-					}
+            dot += c2;
+            i++;
+           }
 
 					if (eol)
-					{
-						// да, точка в конце предложени€
+           {
+            // да, точка в конце предложени€
 						if (word.empty())
-						{
+             {
 							AddWord(dot);
-							break;
+              break;
 						}
-						else
-						{
+            else
+             {
 							AddWord(word);
 							AddWord(dot);
-							word.clear();
-							break;
+              word.clear();
+              break;
 						}
 					}
-					else
-					{
+          else
+           {
 						if (dot == L"...")
-						{
+             {
 							if (word.empty())
-							{
+               {
 								AddWord(dot);
 							}
-							else
-							{
+              else
+               {
 								AddWord(word);
 								AddWord(dot);
-								word.clear();
+                word.clear();
 							}
 
-							break;
-						}
-					}
+              break;
+             }
+           }
 
-					// Ќет, эта точка либо €вл€етс€ частью числа "3.141", либо частью сокращени€ "кг.",
-					// либо частью многоточи€ "..."
-					word += c;
-					break;
-				}
+          // Ќет, эта точка либо €вл€етс€ частью числа "3.141", либо частью сокращени€ "кг.",
+          // либо частью многоточи€ "..."
+          word += c;
+          break;
+         }
 
 				if (word.empty())
-				{
-					i++;
-					word = c;
+         {
+          i++;
+          word = c;
 
-					// может быть несколько ???, !!!, ... или даже смесь ?!
+          // может быть несколько ???, !!!, ... или даже смесь ?!
 					while (i < l)
-					{
-						wchar_t c2 = org_phrase[i];
+           {
+            wchar_t c2 = org_phrase[i];
 						if (c2 == L'.' || c2 == L'!' || c2 == '?')
-						{
+             {
 							word += c2;
 							i++;
+             }
+            else
+             {
+              break;
 						}
-						else
-						{
-							break;
-						}
-					}
+           }
 
 					AddWord(word);
-					word.clear();
-				}
-				else
-				{
+          word.clear();
+         }
+        else
+         {
 					AddWord(word);
-					word.clear();
-				}
+          word.clear();
+         }
 
-				break;
-			}
+        break;
+       }
 
-			default:
-			{
+      default:
+       {
 				if (word.empty())
-				{
-					i++;
-					word = c;
+         {
+          i++;
+          word = c;
 					AddWord(word);
-					word.clear();
-				}
-				else
-				{
+          word.clear();
+         }
+        else
+         {
 					AddWord(word);
 
-					i++;
-					word = c;
+          i++;
+          word = c;
 					AddWord(word);
-					word.clear();
-				}
+          word.clear();
+         }
 
-				break;
-			}
-			}
-		}
-		else
-		{
+        break;
+       }
+     }
+    }
+   else
+    {
 			word += c;
-			i++;
-		}
-	}
+     i++;
+    }
+  }
 
-	// ѕоследнее слово терминируетс€ концом строки
+ // ѕоследнее слово терминируетс€ концом строки
 	if (!word.empty())
-	{
+  {
 		AddWord(word);
-	}
+  }
 
-	return;
+ return;
 }
 
 
 
 void Sentence::clear(void)
 {
-	words.clear();
-	return;
+ words.clear();
+ return;
 }
 
 void Sentence::PrintOrg(OFormatter &s) const
 {
 	for (Container::size_type i = 0; i < size(); i++)
-	{
-		const SentenceWord * word = words[i];
+  {
+   const SentenceWord * word = words[i];
 		s.printf("%us ", word->word.c_str());
-	}
+  }
 
-	return;
+ return;
 }
 
 // ***************************************************************
@@ -388,29 +388,27 @@ void Sentence::PrintOrg(OFormatter &s) const
 // ***************************************************************
 const lem::UFString Sentence::string(wchar_t delimiter) const
 {
-	UFString res;
+ UFString res;
 	for (Container::size_type i = 0; i < size(); i++)
-	{
-		if (i) res.Add_Dirty(delimiter);
-		res.Add_Dirty(GetWord(i).c_str());
-	}
+  {
+   if( i ) res += delimiter;
+   res += GetWord(i).c_str();
+  }
 
-	res.calc_hash();
-
-	return res;
+ return res;  
 }
 
 
 void Sentence::SaveBin(lem::Stream &bin) const
 {
-	// ... todo
-	return;
+ // ... todo
+ return;
 }
 
 void Sentence::LoadBin(lem::Stream &bin)
 {
-	// ... todo
-	return;
+ // ... todo
+ return;
 }
 
 

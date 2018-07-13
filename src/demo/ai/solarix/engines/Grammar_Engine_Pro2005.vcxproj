@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -140,7 +140,6 @@
     <ClCompile Include="..\..\..\..\ai\la\PatternNGramTreeScorer.cpp" />
     <ClCompile Include="EngineDllMain.cpp" />
     <ClCompile Include="errors_api.cpp" />
-    <ClCompile Include="GrammarEngineHolder.cpp" />
     <ClCompile Include="grammar_engine_api.cpp" />
     <ClCompile Include="..\..\..\..\contain\lem_acstring.cpp" />
     <ClCompile Include="..\..\..\..\contain\lem_afstring.cpp" />
@@ -228,6 +227,7 @@
     <ClCompile Include="..\..\..\..\math\random\randu.cpp" />
     <ClCompile Include="..\..\..\..\db\mysql_helpers.cpp" />
     <ClCompile Include="..\..\..\..\db\sqlite_helpers.cpp" />
+    <ClCompile Include="GrammarEngineHolder.cpp" />
     <ClCompile Include="..\..\..\..\ai\aa\aa_autom.cpp" />
     <ClCompile Include="..\..\..\..\ai\la\BackRefCorrel.cpp" />
     <ClCompile Include="..\..\..\..\ai\la\BasicLexer.cpp" />

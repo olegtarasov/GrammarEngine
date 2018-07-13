@@ -119,7 +119,7 @@ copy $(TargetPath) "e:\MVoice\lem\exe\"
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>e:\boost.1.66\;$(LEM_PATH)\include;$(LEM_PATH)\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;$(LEM_PATH)\demo\ai\solarix\MaxEnt\win32\MaxentTaggerLib\;$(LEM_PATH)\demo\ai\solarix\DeSR\libdesr\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_PATH);$(ProjectDir)..\..\..\..\..\..\include;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\MaxEnt\win32\MaxentTaggerLib\;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\DeSR\libdesr\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CONSOLE;LEM_UNICODE_EX;DLL_EXPORTS;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOLARIX_GRAMMAR_ENGINE;GM_THESAURUS;GM_STEMMER;SOL_GM_ENGLISH;SOL_SQLITE_NGRAMS;SOL_CRF_MODEL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -134,7 +134,7 @@ copy $(TargetPath) "e:\MVoice\lem\exe\"
     <Link>
       <AdditionalDependencies>libcrf.lib;cqdb.lib;libLBFGS.lib;libdesrd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)Parser.exe</OutputFile>
-      <AdditionalLibraryDirectories>e:\boost.1.66\stage\lib;$(LEM_PATH)\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>e:\boost.1.66\stage\lib;$(ProjectDir)..\..\..\..\..\..\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)Parser.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
@@ -190,7 +190,7 @@ copy e:\mvoice\lem\lib\libdesr.dll $(OutDir)
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\include;$(LEM_PATH)\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;$(LEM_PATH)\demo\ai\solarix\MaxEnt\win32\MaxentTaggerLib\;$(LEM_PATH)\demo\ai\solarix\DeSR\libdesr\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_PATH);$(ProjectDir)..\..\..\..\..\..\include;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\MaxEnt\win32\MaxentTaggerLib\;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\DeSR\libdesr\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CONSOLE;LEM_UNICODE_EX;DLL_EXPORTS;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOLARIX_GRAMMAR_ENGINE;GM_THESAURUS;GM_STEMMER;SOL_GM_ENGLISH;SOL_SQLITE_NGRAMS;BOOST_THREAD_BUILD_LIB;SOL_CRF_MODEL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -213,7 +213,7 @@ copy e:\mvoice\lem\lib\libdesr.dll $(OutDir)
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(LEM_PATH)\exe64
+      <Command>copy $(TargetPath) $(ProjectDir)\..\..\..\..\..\..\exe64
 copy e:\mvoice\lem\lib64\sqlite.dll $(OutDir)
 copy e:\mvoice\lem\lib64\libdesr.dll $(OutDir)
 </Command>

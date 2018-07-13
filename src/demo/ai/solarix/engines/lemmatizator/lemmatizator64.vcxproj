@@ -211,6 +211,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>$(LEM_PATH)\lib64\lemmatizator.lib</ImportLibrary>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalLibraryDirectories>e:\boost.1.66\stage\lib;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -241,7 +242,6 @@
     <ClCompile Include="..\..\..\..\..\io\char_reader\chr_html_decoder.cpp" />
     <ClCompile Include="..\..\..\..\..\io\char_reader\chr_icu_reader.cpp" />
     <ClCompile Include="..\..\..\..\..\io\char_reader\chr_laguage_filter.cpp" />
-    <ClCompile Include="..\..\..\..\..\io\char_reader\chr_translit_reader.cpp" />
     <ClCompile Include="..\..\..\..\..\io\char_reader\chr_utf16_reader.cpp" />
     <ClCompile Include="..\..\..\..\..\io\char_reader\chr_utf8_reader.cpp" />
     <ClCompile Include="..\..\..\..\..\tools\lem_application.cpp" />

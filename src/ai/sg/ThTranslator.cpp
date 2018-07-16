@@ -9,7 +9,7 @@ using namespace Solarix;
 #if LEM_DEBUGGING==1
 # pragma comment ( lib, "sqlited.lib" )
 #else
-# pragma comment ( lib, "sqlite.lib" )
+# pragma comment ( lib, "sqlite3.lib" )
 #endif
 #endif
 

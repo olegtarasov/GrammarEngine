@@ -221,9 +221,30 @@ BEGIN  ловит ( кошка, мышей )   END
 API словаря реализован как динамическая библиотека solarix_grammar_engine.dll на платформе Windows
 или solarix_grammar_engine.so для Linux. 
 
-Для сборки с помощью MS VisualStudio 2015 откройте проект [Grammar_Engine_Pro2005.sln](https://github.com/Koziev/GrammarEngine/blob/master/src/demo/ai/solarix/engines/Grammar_Engine_Pro2005.sln)
-в папке [.../src/demo/ai/solarix/engines](https://github.com/Koziev/GrammarEngine/tree/master/src/demo/ai/solarix/engines) и
-запустите компиляция. По окончании в папке .../src/lib64 появится файл solarix_grammar_engine.dll.
+### Сборка под Windows
+
+В отличие от основной ветки, в этом форке сборка проекта производится с помощью Visual Studio 2017 и последних версий тулчейна.
+Также, `boost` и `sqlite` устанавливаются через `vcpkg`. Эти зависимости линкуются как динамические библиотеки. Для сборки необходимо:
+
+1. Установить `vcpkg` в любую папку. Например, в `C:\tools\vcpkg`.
+```
+> git clone https://github.com/Microsoft/vcpkg.git
+> cd vcpkg
+
+PS> .\bootstrap-vcpkg.bat
+PS> .\vcpkg integrate install
+```
+
+2. Установить `boost` и `sqlite`.
+```
+vcpkg install boost:x64-windows sqlite3:x64-windows
+```
+
+3. Открыть проект [Grammar_Engine_Pro2005.sln](https://github.com/Koziev/GrammarEngine/blob/master/src/demo/ai/solarix/engines/Grammar_Engine_Pro2005.sln)
+в папке [.../src/demo/ai/solarix/engines](https://github.com/Koziev/GrammarEngine/tree/master/src/demo/ai/solarix/engines) и запустить сборку.
+Бинарники окажутся в папке `$(ProjectDir)..\..\..\..\..\bin\GrammarEngine`.
+
+### Сборка под Ubuntu
 
 Для компиляции под Ubuntu запустите скрипт build.sh в той же папке.
 

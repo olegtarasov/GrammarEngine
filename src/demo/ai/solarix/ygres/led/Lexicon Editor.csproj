@@ -26,7 +26,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -93,9 +93,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="gren_fx">
-      <Name>gren_fx</Name>
-      <HintPath>..\..\..\..\..\lib\gren_fx.dll</HintPath>
+    <Reference Include="GrammarEngineApi, Version=1.0.10.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\GrammarEngineApi.1.1.53\lib\net\GrammarEngineApi.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -136,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -148,10 +148,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(OutDir)\lexicon_editor.exe" e:\mvoice\lem\exe64
-copy "e:\mvoice\lem\lib64\sqlite.dll"  "..\..\..\..\..\..\..\tmp\Lexicon Editor\Debug" 
-copy "e:\mvoice\lem\lib64\solarix_grammar_engine.dll"  "..\..\..\..\..\..\..\tmp\Lexicon Editor\Debug" 
-
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

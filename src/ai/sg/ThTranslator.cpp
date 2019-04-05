@@ -21,19 +21,19 @@ using namespace Solarix;
 TranslatorThesaurus::TranslatorThesaurus()
 {
     hdb = nullptr;
- return;
+    return;
 }
 
 
 TranslatorThesaurus::~TranslatorThesaurus()
 {
     if (hdb != nullptr)
-  {
-   sqlite3_close(hdb);
+    {
+        sqlite3_close(hdb);
         hdb = nullptr;
-  }
+    }
 
- return;
+    return;
 }
 
 void TranslatorThesaurus::Open(const lem::Path &sqlite_file)
@@ -45,12 +45,12 @@ void TranslatorThesaurus::Open(const lem::Path &sqlite_file)
 #endif
 
     if (res != SQLITE_OK)
-  {
+    {
         UFString msg = lem::format_str(L"Can not open SQLite database file '%s', error=%d message=%s", sqlite_file.GetUnicode().c_str(), res, sqlite3_errmsg16(hdb));
         throw E_BaseException(msg.c_str());
-  }
+    }
 
- return;
+    return;
 }
 
 void TranslatorThesaurus::GetTags(lem::PtrCollect<lem::UFString> &tags)
@@ -61,14 +61,14 @@ void TranslatorThesaurus::GetTags(lem::PtrCollect<lem::UFString> &tags)
 
     lem::FString sql("SELECT tg_name FROM TAGS");
 
- const char *dummy;
+    const char *dummy;
     int res = sqlite3_prepare(hdb, sql.c_str(), sql.length(), &stmt, &dummy);
     if (res == SQLITE_OK)
-  {
-        while (sqlite3_step(stmt) == SQLITE_ROW)
     {
-     try
-      {
+        while (sqlite3_step(stmt) == SQLITE_ROW)
+        {
+            try
+            {
 #if defined LEM_WINDOWS
                 const wchar_t *txt2 = (const wchar_t*)sqlite3_column_text16(stmt, 0);
                 tags.push_back(new UFString(txt2));
@@ -78,16 +78,16 @@ void TranslatorThesaurus::GetTags(lem::PtrCollect<lem::UFString> &tags)
 #else
 #error
 #endif
-      }
+            }
             catch (...)
-      {
-      }
+            {
+            }
+        }
+
+        sqlite3_finalize(stmt);
     }
 
-   sqlite3_finalize(stmt);
-  }
-
- return;
+    return;
 }
 
 
@@ -99,35 +99,35 @@ void TranslatorThesaurus::Translate(const lem::UFString &in, lem::PtrCollect<lem
     sqlite3_stmt *stmt = nullptr;
 
     for (int pass = 0; pass < 2; ++pass)
-  {
-   UFString e;
-   lem::FString field;
+    {
+        UFString e;
+        lem::FString field;
 
-   // Сначала пытаемся найти перевод для слова in с точным соответствием регистра
-   // словарной статье. Если ничего не получится, приводим к нижнему регистру и
-   // повторяем поиск.
+        // Сначала пытаемся найти перевод для слова in с точным соответствием регистра
+        // словарной статье. Если ничего не получится, приводим к нижнему регистру и
+        // повторяем поиск.
         if (pass == 0)
-    {
-     e = in;
-     field = "t_word";
-    }
-   else
-    {
-     e = lem::to_lower(in);
-     field = "t_lword";
-    }
+        {
+            e = in;
+            field = "t_word";
+        }
+        else
+        {
+            e = lem::to_lower(in);
+            field = "t_lword";
+        }
 
         lem::FString sql(lem::format_str("SELECT t_out FROM TRANSL WHERE %s='%s' ORDER BY t_order", field.c_str(), lem::to_utf8(e).c_str()));
 
         int nfound = 0;
-   const char *dummy;
+        const char *dummy;
         int res = sqlite3_prepare(hdb, sql.c_str(), sql.length(), &stmt, &dummy);
         if (res == SQLITE_OK)
-    {
-            while (sqlite3_step(stmt) == SQLITE_ROW)
-      {
-       try
         {
+            while (sqlite3_step(stmt) == SQLITE_ROW)
+            {
+                try
+                {
 #if defined LEM_WINDOWS
                     const wchar_t *txt2 = (const wchar_t*)sqlite3_column_text16(stmt, 0);
                     outs.push_back(new UFString(txt2));
@@ -137,42 +137,42 @@ void TranslatorThesaurus::Translate(const lem::UFString &in, lem::PtrCollect<lem
 #else
 #error
 #endif
-         nfound++;
-        }
+                    nfound++;
+                }
                 catch (...)
-        {
-        }
-      }
+                {
+                }
+            }
 
-     sqlite3_finalize(stmt);
+            sqlite3_finalize(stmt);
 
             if (nfound > 0)
-      break;
+                break;
+        }
+
     }
 
-  }
-
- return;
+    return;
 }
 
 bool TranslatorThesaurus::IsLeftHeadword(const lem::UFString &w, int &minlen, int &maxlen)
 {
- UFString uw = lem::UFString(L"CPLX_") + lem::to_upper(w);
- lem::PtrCollect<lem::UFString> outs;
+    UFString uw = lem::UFString(L"CPLX_") + lem::to_upper(w);
+    lem::PtrCollect<lem::UFString> outs;
     Translate(uw, outs);
     if (outs.empty())
-  return false;
+        return false;
 
- lem::MCollect<UCString> toks;
+    lem::MCollect<UCString> toks;
     lem::parse(*outs.front(), toks, false);
     if (toks.size() == 2)
-  {
+    {
         minlen = lem::to_int(toks[0]);
         maxlen = lem::to_int(toks[1]);
-   return true;
-  }
- else
-  {
-   return false;
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }

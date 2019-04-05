@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <ppl.h>
-
-using namespace concurrency;
 
 #if defined WIN32
 #include <windows.h>
@@ -113,7 +110,7 @@ int main( int argc, char *argv[] )
  // SOL_GREN_LAZY_LEXICON instructs the engine to load the word entries when they needed
  // http://www.solarix.ru/api/sol_CreateGrammarEngine.shtml
  #if defined WIN32
- const char dict_path[] = "C:\\Projects\\GrammarEngineApi\\embeddings\\grammar\\dictionary.xml";
+ const char dict_path[] = "..\\..\\..\\..\\..\\bin-windows\\dictionary.xml";
  #else
   #if defined __i386__
   const char dict_path[] = "../../../../../bin-linux/dictionary.xml";
@@ -124,7 +121,7 @@ int main( int argc, char *argv[] )
 
  printf( "Loading dictionary %s ...\n", dict_path );
 
- HGREN hEngine = sol_CreateGrammarEngineEx8( dict_path, 0 );
+ HGREN hEngine = sol_CreateGrammarEngineEx8( dict_path, SOL_GREN_LAZY_LEXICON );
 
  if( hEngine==NULL )
   {
@@ -132,42 +129,42 @@ int main( int argc, char *argv[] )
    return 1;
   }
 
- //char sentence[] = "Кошки ели мой корм"; // utf-8
+ char sentence[] = "Кошки ели мой корм"; // utf-8
 
  // Buffers for some text information
  char * EntryName = new char[ sol_MaxLexemLen8(hEngine) ];
  char * PartOfSpeechName = new char[ sol_MaxLexemLen8(hEngine) ];
  char * Word = new char[ sol_MaxLexemLen8(hEngine) ];
 
- //// Split the sentence into words.
- //// http://www.solarix.ru/api/sol_Tokenize.shtml
- //HGREN_STR hWords = sol_Tokenize8( hEngine, sentence, -1 );
+ // Split the sentence into words.
+ // http://www.solarix.ru/api/sol_Tokenize.shtml
+ HGREN_STR hWords = sol_Tokenize8( hEngine, sentence, -1 );
 
- //int nword = sol_CountStrings(hWords); // http://www.solarix.ru/api/sol_CountStrings.shtml
- //
- //for( int i=0; i<nword; ++i )
- //{
- // sol_GetString8( hWords, i, Word ); // extract next word http://www.solarix.ru/api/sol_GetString.shtml
+ int nword = sol_CountStrings(hWords); // http://www.solarix.ru/api/sol_CountStrings.shtml
+ 
+ for( int i=0; i<nword; ++i )
+ {
+  sol_GetString8( hWords, i, Word ); // extract next word http://www.solarix.ru/api/sol_GetString.shtml
 
- // HGREN_WCOORD hProjs = sol_ProjectWord8( hEngine, Word, 0 ); // look for the word forms in dictionary http://www.solarix.ru/api/sol_ProjectWord.shtml
+  HGREN_WCOORD hProjs = sol_ProjectWord8( hEngine, Word, 0 ); // look for the word forms in dictionary http://www.solarix.ru/api/sol_ProjectWord.shtml
 
- // int nprojs = sol_CountProjections(hProjs); // http://www.solarix.ru/api/sol_CountProjections.shtml
- // 
- // for( int i=0; i<nprojs; ++i )
- //  {
- //   int id_entry = sol_GetIEntry(hProjs,i); // http://www.solarix.ru/api/sol_GetIEntry.shtml
- //   int id_partofspeech = sol_GetEntryClass( hEngine, id_entry ); // http://www.solarix.ru/api/sol_GetEntryClass.shtml
+  int nprojs = sol_CountProjections(hProjs); // http://www.solarix.ru/api/sol_CountProjections.shtml
+  
+  for( int i=0; i<nprojs; ++i )
+   {
+    int id_entry = sol_GetIEntry(hProjs,i); // http://www.solarix.ru/api/sol_GetIEntry.shtml
+    int id_partofspeech = sol_GetEntryClass( hEngine, id_entry ); // http://www.solarix.ru/api/sol_GetEntryClass.shtml
 
- //   sol_GetEntryName8( hEngine, id_entry, EntryName ); // http://www.solarix.ru/api/sol_GetEntryName.shtml
- //   sol_GetClassName8( hEngine, id_partofspeech, PartOfSpeechName ); // http://www.solarix.ru/api/sol_GetClassName.shtml
+    sol_GetEntryName8( hEngine, id_entry, EntryName ); // http://www.solarix.ru/api/sol_GetEntryName.shtml
+    sol_GetClassName8( hEngine, id_partofspeech, PartOfSpeechName ); // http://www.solarix.ru/api/sol_GetClassName.shtml
 
- //   // ...
- //  }
+    // ...
+   }
 
- // sol_DeleteProjections(hProjs); // http://www.solarix.ru/api/sol_DeleteProjections.shtml
- //}
+  sol_DeleteProjections(hProjs); // http://www.solarix.ru/api/sol_DeleteProjections.shtml
+ }
 
- //sol_DeleteStrings(hWords); // http://www.solarix.ru/api/sol_DeleteStrings.shtml
+ sol_DeleteStrings(hWords); // http://www.solarix.ru/api/sol_DeleteStrings.shtml
 
 
  // -------------------------
@@ -182,55 +179,45 @@ int main( int argc, char *argv[] )
  // число просматриваемых альтернатив. Именно этот факт используется далее в коде для проверки,
  // что морфологическая модель работает.
  
- const char long_sentence[]="Мы ели вкусный суп, ели шумели, а голубые ели креветок, в то время, как 10 обезьянок тянули эспандер в разные стороны (каким бы странным не выглядело это длинное предложение).";
+ const char long_sentence[]="Мы ели вкусный суп";
+
+ HGREN_RESPACK hPack;
 
  // --- no model of russian morphology ---
 
- int MorphologicalFlags = SOL_GREN_MODEL | SOL_GREN_MODEL_ONLY;
+ int MorphologicalFlags = SOL_GREN_COMPLETE_ONLY;
  int SyntacticFlags = 0;
  int Constraints = 20 << 22;
 
-	parallel_for(0, 10000, [&](int i)
-	{
-		auto hPack = sol_MorphologyAnalysis8(hEngine, long_sentence, MorphologicalFlags, 0, 0, RUSSIAN_LANGUAGE);
-		int n = sol_CountRoots(hPack, 0);
-		for (int r = 0; r < n; r++)
-		{
-			auto root = sol_GetRoot(hPack, 0, r);
-			int entry = sol_GetNodeIEntry(hEngine, root);
-		}
-		sol_DeleteResPack(hPack);
-	});
+ hPack = sol_SyntaxAnalysis8( hEngine, long_sentence, MorphologicalFlags, SyntacticFlags, Constraints, RUSSIAN_LANGUAGE );
+ PrintSyntaxTrees( stdout, hEngine, hPack );
+ printf( "\n\n" );
+ sol_DeleteResPack( hPack );
 
- //hPack = sol_SyntaxAnalysis8( hEngine, long_sentence, MorphologicalFlags, SyntacticFlags, Constraints, RUSSIAN_LANGUAGE );
- //PrintSyntaxTrees( stdout, hEngine, hPack );
- //printf( "\n\n" );
- //sol_DeleteResPack( hPack );
+ // включаем вероятностную модель русской морфологии...
+ MorphologicalFlags = SOL_GREN_MODEL | SOL_GREN_COMPLETE_ONLY;
+ SyntacticFlags = 0;
 
- //// включаем вероятностную модель русской морфологии...
- //MorphologicalFlags = SOL_GREN_MODEL | SOL_GREN_COMPLETE_ONLY;
- //SyntacticFlags = 0;
+ // и сильно ограничиваем парсер на размер пространства перебора, до 2х альтернатив на каждом шаге...
+ int MAX_ALT = 2;
+ int TIMEOUT = 0;
+ Constraints = (MAX_ALT<<22) | TIMEOUT;
+ hPack = sol_SyntaxAnalysis8( hEngine, long_sentence, MorphologicalFlags, SyntacticFlags, Constraints, RUSSIAN_LANGUAGE );
+ PrintSyntaxTrees( stdout, hEngine, hPack );
+ sol_DeleteResPack( hPack );
+ printf( "\n\n" );
 
- //// и сильно ограничиваем парсер на размер пространства перебора, до 2х альтернатив на каждом шаге...
- //int MAX_ALT = 2;
- //int TIMEOUT = 0;
- //Constraints = (MAX_ALT<<22) | TIMEOUT;
- //hPack = sol_SyntaxAnalysis8( hEngine, long_sentence, MorphologicalFlags, SyntacticFlags, Constraints, RUSSIAN_LANGUAGE );
- //PrintSyntaxTrees( stdout, hEngine, hPack );
- //sol_DeleteResPack( hPack );
- //printf( "\n\n" );
-
- //// проверим без модели - парсер не сможет выполнить разбор
- //MorphologicalFlags = SOL_GREN_COMPLETE_ONLY;
- //SyntacticFlags = 0;
- //hPack = sol_SyntaxAnalysis8( hEngine, long_sentence, MorphologicalFlags, SyntacticFlags, Constraints, RUSSIAN_LANGUAGE );
- //PrintSyntaxTrees( stdout, hEngine, hPack );
- //sol_DeleteResPack( hPack );
- //printf( "\n\n" );
+ // проверим без модели - парсер не сможет выполнить разбор
+ MorphologicalFlags = SOL_GREN_COMPLETE_ONLY;
+ SyntacticFlags = 0;
+ hPack = sol_SyntaxAnalysis8( hEngine, long_sentence, MorphologicalFlags, SyntacticFlags, Constraints, RUSSIAN_LANGUAGE );
+ PrintSyntaxTrees( stdout, hEngine, hPack );
+ sol_DeleteResPack( hPack );
+ printf( "\n\n" );
 
 
  sol_DeleteGrammarEngine(hEngine); // http://www.solarix.ru/api/sol_DeleteGrammarEngine.shtml
 
- return 1;
+ return 0;
 }
 

@@ -106,9 +106,9 @@ bool SequenceLabelerModel::Load()
 
 
 void SequenceLabelerModel::Apply(BasicLexer & lexer,
-                                 Dictionary & dict,
-                                 const ElapsedTimeConstraint & constraints,
-                                 bool remove_incorrect_alts)
+    Dictionary & dict,
+    const ElapsedTimeConstraint & constraints,
+    bool remove_incorrect_alts)
 {
 #if defined SOL_CRF_MODEL && defined SOL_CAA
     lem::Process::CritSecLocker cs_locker(&crf_critsect); // #9
@@ -118,9 +118,9 @@ void SequenceLabelerModel::Apply(BasicLexer & lexer,
 
 
 void SequenceLabelerModel::Apply_CRFSuite(BasicLexer & lexer,
-                                          Dictionary & dict,
-                                          const ElapsedTimeConstraint & constraints,
-                                          bool remove_incorrect_alts)
+    Dictionary & dict,
+    const ElapsedTimeConstraint & constraints,
+    bool remove_incorrect_alts)
 {
 #if defined SOL_CRF_MODEL && defined SOL_CAA
 

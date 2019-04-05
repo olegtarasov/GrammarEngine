@@ -1,25 +1,25 @@
 #if !defined LEM_SQLITE_TEXT16__H
 #define LEM_SQLITE_TEXT16__H
 
- #include <lem/ufstring.h>
- #include <lem/ucstring.h>
- #include <sqlite3.h>
+#include <lem/ufstring.h>
+#include <lem/ucstring.h>
+#include <lem/sqlite/sqlite3.h>
 
 namespace lem
 {
-  class SqliteTxGuard
-  {
+    class SqliteTxGuard
+    {
     private:
-    struct sqlite3* hdb;
-    bool committed;
+        struct sqlite3* hdb;
+        bool committed;
 
-   public:
-    SqliteTxGuard(struct sqlite3* hdb);
+    public:
+        SqliteTxGuard(struct sqlite3* hdb);
         ~SqliteTxGuard();
         void Commit();
-  };
+    };
 
-  extern bool sqlite_init_serialized_mode();
+    extern bool sqlite_init_serialized_mode();
 
     extern struct sqlite3* sqlite_open_serialized(const lem::UFString & connection_string);
     extern lem::Path sqlite_get_absolute_filepath(const lem::UFString & connection_string);

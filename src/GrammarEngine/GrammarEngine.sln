@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Grammar_Engine", "..\demo\ai\solarix\engines\Grammar_Engine_Pro2005.vcxproj", "{BB405659-6EA6-4D1E-9B36-5FB0C5FFFD0D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "..\demo\ai\solarix\ygres\compiler\ygres_msvc2005\ygres_compiler.vcxproj", "{C649F441-6725-44E0-A646-2069FC59172E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB405659-6EA6-4D1E-9B36-5FB0C5FFFD0D}.Debug|x64.ActiveCfg = Debug|x64
+		{BB405659-6EA6-4D1E-9B36-5FB0C5FFFD0D}.Debug|x64.Build.0 = Debug|x64
+		{BB405659-6EA6-4D1E-9B36-5FB0C5FFFD0D}.Release|x64.ActiveCfg = Release|x64
+		{BB405659-6EA6-4D1E-9B36-5FB0C5FFFD0D}.Release|x64.Build.0 = Release|x64
+		{C649F441-6725-44E0-A646-2069FC59172E}.Debug|x64.ActiveCfg = Debug|x64
+		{C649F441-6725-44E0-A646-2069FC59172E}.Debug|x64.Build.0 = Debug|x64
+		{C649F441-6725-44E0-A646-2069FC59172E}.Release|x64.ActiveCfg = Release|x64
+		{C649F441-6725-44E0-A646-2069FC59172E}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A15707C8-BA4E-4165-B80F-1750480898EB}
+	EndGlobalSection
+EndGlobal

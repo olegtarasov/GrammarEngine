@@ -14,8 +14,9 @@
     <files>
         <file src="..\..\bin\GrammarEngine\x64\Release\solarix_grammar_engine.dll" target="content\Resources\solarix_grammar_engine.dll" />
         <file src="..\..\bin\GrammarEngine\x64\Release\sqlite3.dll" target="content\Resources\sqlite3.dll" />
-        <file src="..\..\bin\GrammarEngine\x64\Release\boost_date_time-vc141-mt-x64-1_67.dll" target="content\Resources\boost_date_time-vc141-mt-x64-1_67.dll" />
-        <file src="..\..\bin\GrammarEngine\x64\Release\boost_regex-vc141-mt-x64-1_67.dll" target="content\Resources\boost_regex-vc141-mt-x64-1_67.dll" />
-        <file src="..\..\bin\GrammarEngine\x64\Release\boost_system-vc141-mt-x64-1_67.dll" target="content\Resources\boost_system-vc141-mt-x64-1_67.dll" />
+        <file src="..\..\bin\GrammarEngine\x64\Release\boost_date_time-vc141-mt-x64-1_68.dll" target="content\Resources\boost_date_time-vc141-mt-x64-1_68.dll" />
+        <file src="..\..\bin\GrammarEngine\x64\Release\boost_regex-vc141-mt-x64-1_68.dll" target="content\Resources\boost_regex-vc141-mt-x64-1_68.dll" />
+        <file src="..\..\bin\GrammarEngine\x64\Release\boost_system-vc141-mt-x64-1_68.dll" target="content\Resources\boost_system-vc141-mt-x64-1_68.dll" />
+        <file src="..\..\bin\GrammarEngine\x64\Release\compiler.exe" target="content\Resources\compiler.exe" />
     </files>
 </package>

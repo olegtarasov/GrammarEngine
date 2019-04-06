@@ -4,8 +4,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Grammar_Engine", "..\demo\ai\solarix\engines\Grammar_Engine_Pro2005.vcxproj", "{BB405659-6EA6-4D1E-9B36-5FB0C5FFFD0D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D6B16F2E-DA86-4591-8B50-348AB7E3432E} = {D6B16F2E-DA86-4591-8B50-348AB7E3432E}
+		{C4405B73-A899-44BF-8681-04CE040B6705} = {C4405B73-A899-44BF-8681-04CE040B6705}
+		{46A23DE6-7E34-4429-8F15-FCC3C083FC5B} = {46A23DE6-7E34-4429-8F15-FCC3C083FC5B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "..\demo\ai\solarix\ygres\compiler\ygres_msvc2005\ygres_compiler.vcxproj", "{C649F441-6725-44E0-A646-2069FC59172E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lib", "..\depends\liblbfgs\lib\lib.vcxproj", "{C4405B73-A899-44BF-8681-04CE040B6705}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cqdb", "..\depends\crfsuite\lib\cqdb\cqdb.vcxproj", "{46A23DE6-7E34-4429-8F15-FCC3C083FC5B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crf", "..\depends\crfsuite\lib\crf\crf.vcxproj", "{D6B16F2E-DA86-4591-8B50-348AB7E3432E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C4405B73-A899-44BF-8681-04CE040B6705} = {C4405B73-A899-44BF-8681-04CE040B6705}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +35,18 @@ Global
 		{C649F441-6725-44E0-A646-2069FC59172E}.Debug|x64.Build.0 = Debug|x64
 		{C649F441-6725-44E0-A646-2069FC59172E}.Release|x64.ActiveCfg = Release|x64
 		{C649F441-6725-44E0-A646-2069FC59172E}.Release|x64.Build.0 = Release|x64
+		{C4405B73-A899-44BF-8681-04CE040B6705}.Debug|x64.ActiveCfg = Debug|x64
+		{C4405B73-A899-44BF-8681-04CE040B6705}.Debug|x64.Build.0 = Debug|x64
+		{C4405B73-A899-44BF-8681-04CE040B6705}.Release|x64.ActiveCfg = Release|x64
+		{C4405B73-A899-44BF-8681-04CE040B6705}.Release|x64.Build.0 = Release|x64
+		{46A23DE6-7E34-4429-8F15-FCC3C083FC5B}.Debug|x64.ActiveCfg = Debug|x64
+		{46A23DE6-7E34-4429-8F15-FCC3C083FC5B}.Debug|x64.Build.0 = Debug|x64
+		{46A23DE6-7E34-4429-8F15-FCC3C083FC5B}.Release|x64.ActiveCfg = Release|x64
+		{46A23DE6-7E34-4429-8F15-FCC3C083FC5B}.Release|x64.Build.0 = Release|x64
+		{D6B16F2E-DA86-4591-8B50-348AB7E3432E}.Debug|x64.ActiveCfg = Debug|x64
+		{D6B16F2E-DA86-4591-8B50-348AB7E3432E}.Debug|x64.Build.0 = Debug|x64
+		{D6B16F2E-DA86-4591-8B50-348AB7E3432E}.Release|x64.ActiveCfg = Release|x64
+		{D6B16F2E-DA86-4591-8B50-348AB7E3432E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -77,7 +77,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4025;4995;4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\include;$(ProjectDir)..\..\..\..\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\include;$(ProjectDir)..\..\..\..\depends\crfsuite\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -91,7 +91,7 @@
       <ImportLibrary>$(OutDir)solarix_grammar_engined.lib</ImportLibrary>
       <TargetMachine>MachineX64</TargetMachine>
       <AdditionalDependencies>crf_debug.lib;cqdb_debug.lib;lbfgs_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\depends\crfsuite\bin\$(Platform)\$(Configuration);$(ProjectDir)..\..\..\..\depends\liblbfgs\bin\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -118,7 +118,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4025;4995;4996;4103;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <BrowseInformation>true</BrowseInformation>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\include;$(ProjectDir)..\..\..\..\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\include;$(ProjectDir)..\..\..\..\depends\crfsuite\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>crf.lib;cqdb.lib;lbfgs.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -133,7 +133,7 @@
       <DataExecutionPrevention />
       <ImportLibrary>$(OutDir)solarix_grammar_engine.lib</ImportLibrary>
       <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\depends\crfsuite\bin\$(Platform)\$(Configuration);$(ProjectDir)..\..\..\..\depends\liblbfgs\bin\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

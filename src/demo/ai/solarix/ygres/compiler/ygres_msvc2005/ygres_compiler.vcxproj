@@ -61,7 +61,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\include;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\include;$(ProjectDir)..\..\..\..\..\..\depends\crfsuite\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;SOL_LOADTXT;SOLARIX_PRO;SOL_LOADBIN;SOL_SAVETXT;SOL_COMPILER;SOL_SAVEBIN;SOL_NO_NGRAMS;BOOST_THREAD_BUILD_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -105,7 +105,7 @@
       <OmitFramePointers>false</OmitFramePointers>
       <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\include;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\..\include;$(ProjectDir)..\..\..\..\..\..\depends\crfsuite\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;LEM_UNICODE_CONSOLE;SOL_LOADBIN;SOL_SAVEBIN;SOL_COMPILER;SOL_LOADTXT;SOL_SAVETXT;SOLARIX_PRO;SOL_NO_NGRAMS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <StructMemberAlignment>Default</StructMemberAlignment>

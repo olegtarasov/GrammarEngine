@@ -7,13 +7,12 @@
         <authors>Elijah Koziev</authors>
         <owners>Elijah Koziev</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Unoficcial build of the latest Russian Grammatical Dictionary and Thesaurus by Elijah Koziev (http://www.solarix.ru).</description>
+        <description>Unofficial build of the latest Russian Grammatical Dictionary and Thesaurus by Elijah Koziev (http://www.solarix.ru).</description>
         <summary />
         <copyright>Elijah Koziev</copyright>
         <contentFiles>
             <files include="**/Resources/*.*" buildAction="EmbeddedResource" />
             <files include="**/*.resx" buildAction="EmbeddedResource" />
-            <files include="**/*.cs" buildAction="Compile" />
         </contentFiles>
     </metadata>
     <files>
@@ -24,6 +23,5 @@
         <file src="..\..\bin\GrammarEngine\x64\Release\boost_system-vc141-mt-x64-1_68.dll" target="contentFiles\any\any\Resources" />
         <file src="..\..\bin\GrammarEngine\x64\Release\compiler.exe" target="contentFiles\any\any\Resources" />
         <file src="Resources.resx" target="contentFiles\any\any\Properties" />
-        <file src="Resources.Designer.cs" target="contentFiles\any\any\Properties" />
     </files>
 </package>

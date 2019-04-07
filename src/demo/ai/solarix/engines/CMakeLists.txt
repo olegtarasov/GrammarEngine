@@ -1,7 +1,7 @@
 project(gren)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories(${CMAKE_SOURCE_DIR}/demo/ai/solarix/CRFSuite/crfsuite-0.12/include)
+include_directories(${CMAKE_SOURCE_DIR}/depends/crfsuite/include)
 
 add_definitions(-DSOL_CRF_MODEL -DLEM_THREADS -DSOL_SAVEBIN -DSOL_SAVEBIN_PA -DLEM_USES_NCURSES=0 -DLEM_CONSOLE -DNDEBUG -DBOOST_ALL_NO_LIB -DDLL_EXPORTS -DSOL_CAA -DSOL_LOADBIN -DSOLARIX_PRO -DSOLARIX_GRAMMAR_ENGINE -DGM_THESAURUS -DGM_STEMMER -DSOL_SQLITE_NGRAMS -DSOL_SAVEBIN -DSOL_SAVEBIN_PA)
 
@@ -11,7 +11,7 @@ target_link_libraries(${PROJECT_NAME} crfsuite cqdb lbfgs dl rt ncurses pthread 
 
 add_custom_command(TARGET ${PROJECT_NAME}
                    POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_SOURCE_DIR}/lib64)
+                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release)
                    
-#file(RENAME ${CMAKE_SOURCE_DIR}/lib64/libgren.so ${CMAKE_SOURCE_DIR}/lib64/solarix_grammar_engine.so)
+#file(RENAME ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release/libgren.so ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release/solarix_grammar_engine.so)
               

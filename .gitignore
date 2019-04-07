@@ -2,6 +2,7 @@ src/exe64/
 src/exe/
 src/bin-linux64/
 src/lib64/
+src/build/
 
 ## Web.Spa and Native ignores
 .idea

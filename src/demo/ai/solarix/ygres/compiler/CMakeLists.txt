@@ -15,5 +15,5 @@ target_link_libraries(compiler ncurses pthread sqlite3 boost_regex)
 
 add_custom_command(TARGET compiler 
                    POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:compiler> ${CMAKE_SOURCE_DIR}/exe64)
+                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:compiler> ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release)
                  

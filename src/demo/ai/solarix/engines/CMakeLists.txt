@@ -12,6 +12,8 @@ target_link_libraries(${PROJECT_NAME} crfsuite cqdb lbfgs dl rt ncurses pthread 
 add_custom_command(TARGET ${PROJECT_NAME}
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release)
-                   
-#file(RENAME ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release/libgren.so ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release/solarix_grammar_engine.so)
+
+add_custom_command(TARGET ${PROJECT_NAME}
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release/libgren.so ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release/solarix_grammar_engine.so)
               

@@ -63,9 +63,9 @@ namespace GrammarEngineApi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] libgren {
+        internal static byte[] solarix_grammar_engine {
             get {
-                object obj = ResourceManager.GetObject("libgren", resourceCulture);
+                object obj = ResourceManager.GetObject("solarix_grammar_engine", resourceCulture);
                 return ((byte[])(obj));
             }
         }

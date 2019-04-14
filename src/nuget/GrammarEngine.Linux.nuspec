@@ -12,14 +12,12 @@
         <copyright>Elijah Koziev</copyright>
         <contentFiles>
             <files include="**/Resources/*.*" buildAction="EmbeddedResource" />
-            <files include="**/*.resx" buildAction="EmbeddedResource" />
-            <files include="**/*.cs" buildAction="Compile" />
+            <files include="**/*.cs.pp" buildAction="Compile" />
         </contentFiles>
     </metadata>
     <files>
         <file src="../../bin/GrammarEngine/x64/Release/solarix_grammar_engine.so" target="contentFiles/any/any/Resources" />
         <file src="../../bin/GrammarEngine/x64/Release/compiler" target="contentFiles/any/any/Resources/compiler" />
-        <file src="ResourcesLinux.resx" target="contentFiles/any/any/Properties" />
-        <file src="ResourcesLinux.Designer.cs" target="contentFiles/any/any/Properties" />
+        <file src="ResourceNamesLinux.cs.pp" target="contentFiles\any\any\Properties" />
     </files>
 </package>

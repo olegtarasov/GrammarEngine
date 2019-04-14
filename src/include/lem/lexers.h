@@ -2782,7 +2782,7 @@ namespace lem
                 read(buffer, maxsize);
 
             res = buffer;
-            delete buffer;
+            delete[] buffer;
         }
         else
         {

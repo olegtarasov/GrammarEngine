@@ -252,7 +252,7 @@ namespace Solarix
     public:
         ExportCoordFunction_Add();
 
-        virtual ExportCoordFunction* Clone();
+        virtual ExportCoordFunction* Clone() override ;
 
         virtual bool Equals(const ExportCoordFunction & y) const override;
         virtual void SaveBin(lem::Stream & bin) const override;

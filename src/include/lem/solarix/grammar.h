@@ -64,7 +64,7 @@ namespace Solarix
         virtual ~Grammar();
 
 #if defined SOL_LOADBIN
-        void LoadBin(lem::Stream& bin, const Load_Options &opt);
+        void LoadBin(lem::Stream& bin, const Load_Options &opt) override ;
 #endif
 
 #if defined SOL_SAVEBIN

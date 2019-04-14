@@ -1,3 +1,4 @@
+src/cmake-build-*/
 src/exe64/
 src/exe/
 src/bin-linux64/

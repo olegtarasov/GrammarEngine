@@ -19,5 +19,5 @@ add_custom_command(TARGET ${PROJECT_NAME}
 
 add_custom_command(TARGET ${PROJECT_NAME}
                    POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release/libgren.so ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release/solarix_grammar_engine.so)
+                   COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release/libgren.so solarix_grammar_engine.so)
               

@@ -13,7 +13,11 @@ add_executable (compiler ${CMAKE_SOURCE_DIR}/ai/la/ModelCodeBook.cpp ${CMAKE_SOU
 
 target_link_libraries(compiler ncurses pthread sqlite3 boost_regex)
 
+add_custom_command(TARGET ${PROJECT_NAME}
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/../bin/linux/compiler/release/x64)
+
 add_custom_command(TARGET compiler 
                    POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:compiler> ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release)
+                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:compiler> ${CMAKE_SOURCE_DIR}/../bin/linux/compiler/release/x64)
                  

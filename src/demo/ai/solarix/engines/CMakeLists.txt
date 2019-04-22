@@ -15,9 +15,13 @@ endif()
 
 add_custom_command(TARGET ${PROJECT_NAME}
                    POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release)
+                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/../bin/linux/grammar_engine/release/x64)
 
 add_custom_command(TARGET ${PROJECT_NAME}
                    POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release/libgren.so ${CMAKE_SOURCE_DIR}/../bin/GrammarEngine/x64/Release/solarix_grammar_engine.so)
+                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_SOURCE_DIR}/../bin/linux/grammar_engine/release/x64)
+
+add_custom_command(TARGET ${PROJECT_NAME}
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_SOURCE_DIR}/../bin/linux/grammar_engine/release/x64/libgren.so ${CMAKE_SOURCE_DIR}/../bin/linux/grammar_engine/release/x64/solarix_grammar_engine.so)
               

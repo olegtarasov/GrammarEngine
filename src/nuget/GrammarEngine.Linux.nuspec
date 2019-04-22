@@ -16,8 +16,8 @@
         </contentFiles>
     </metadata>
     <files>
-        <file src="../../bin/GrammarEngine/x64/Release/solarix_grammar_engine.so" target="contentFiles/any/any/Resources" />
-        <file src="../../bin/GrammarEngine/x64/Release/compiler" target="contentFiles/any/any/Resources/compiler" />
+        <file src="../../bin/linux/grammar_engine/release/x64/solarix_grammar_engine.so" target="contentFiles/any/any/Resources" />
+        <file src="../../bin/linux/compiler/release/x64/compiler" target="contentFiles/any/any/Resources/compiler" />
         <file src="ResourceNamesLinux.cs.pp" target="contentFiles\any\any\Properties" />
     </files>
 </package>

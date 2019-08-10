@@ -234,6 +234,13 @@ tree_scorer language=Russian
 }
 
 
+// Стали слышны крики играющих детей
+// ^^^^^^^^^^^^
+tree_scorer language=Russian
+{
+ if context { прилагательное:*{}.<OBJECT>существительное:сталь{падеж:дат} }
+  then -10
+}
 
 
 
@@ -1124,7 +1131,38 @@ tree_scorer language=Russian
 }
 
 
+// Аллах сотворил всякое животное из воды.
+//       ^^^^^^^^                 ^^^^^^^
+tree_scorer language=Russian
+{
+ if context { rus_verbs:сотворить{}.предлог:из{} }
+  then 2
+}
 
+// Аллегра не сводила глаз с мужа.
+//            ^^^^^^^^^^^^^^
+tree_scorer language=Russian
+{
+ if context { rus_verbs:сводить{}.{ <OBJECT>"глаз"{число:мн} предлог:с{}.*{падеж:твор} } }
+  then 2
+}
+
+// А вы были помолвлены с Лиллианой.
+//           ^^^^^^^^^^^^^^^^^^^^^^
+tree_scorer language=Russian
+{
+ if context { прилагательное:помолвленный{}.предлог:с{}.*{падеж:твор} }
+  then 2
+}
+
+
+// А ты с ним плохо обращаешься?
+//      ^^^^^       ^^^^^^^^^^^
+tree_scorer language=Russian
+{
+ if context { rus_verbs:обращаться{}.предлог:с{}.*{падеж:твор} }
+  then 2
+}
 
 
 
@@ -7706,6 +7744,20 @@ tree_scorer ВалентностьГлагола language=Russian generic
   then 1
 }
 
+// Ей вдруг захотелось закричать от разочарования.
+tree_scorer ВалентностьГлагола language=Russian generic
+{
+ if context { инфинитив:*{}.{ <OBJECT>"ей"{ падеж:твор } безлич_глагол:*{ МОДАЛЬНЫЙ } } }
+  then -2
+}
+
+// Ей было приятно думать об этом.
+tree_scorer ВалентностьГлагола language=Russian generic
+{
+ if context { инфинитив:*{}.{ <OBJECT>"ей"{ падеж:твор } } }
+  then -1
+}
+
 
 
 // ------------------------------------------------------
@@ -8845,6 +8897,233 @@ tree_scorer ВалентностьГлагола language=Russian
  if context { rus_verbs:смотреть{}.предлог:на{}.прилагательное:*{ падеж:предл } }
   then -5
 }
+
+// Ей в глаза смотрела дама червей.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:смотреть{}.{ предлог:в{} "ей"{падеж:твор} } }
+  then -5
+}
+
+// Ей даже передалось его нервное напряжение.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:передаться{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей ничего не приходило на ум.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:приходить{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей и так все было ясно.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { "было"."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей отвели пять часов на раздумья.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:отвести{}."ей"{падеж:твор} }
+  then -5
+}
+
+
+// Ей смертельно надоели эти смертельные игры.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:надоесть{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей пришлось нелегко в прошлом году.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:прийтись{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей отвечали только изумленные печальные взгляды.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:отвечать{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей просто дали пипка под зад.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:дать{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей все виделось в черном цвете.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:видеться{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей в голову пришла одна мысль.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:прийти{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей становилось трудно даже держаться прямо;
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:становиться{}."ей"{падеж:твор} }
+  then -5
+}
+
+
+// Ей бы и не дали вернуться.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:дать{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей всегда доставляло удовольствие плести интриги.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:доставлять{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей доставило немало удовольствия унизить меня.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:доставить{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей отдается вся энергия творящего артиста.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:отдаваться{}."ей"{падеж:твор} }
+  then -5
+}
+
+
+// Ей заранее был известен результат взрыва.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { прилагательное:*{краткий}."ей"{падеж:твор} }
+  then -2
+}
+
+// Ей ставят капельницы и делают уколы.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:ставить{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей вызвали «скорую помощь».
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:вызвать{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей подражали все девушки Советского Союза.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:подражать{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей разрешили оформить опеку над Сашей!
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:разрешить{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ей Самсонова подавай, шофера автобазы!
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:подавать{}."ей"{падеж:твор} }
+  then -5
+}
+
+// Ему это с рук не сойдет.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:сойти{}."с"."рук" }
+  then 5
+}
+
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { "это"."с"."рук" }
+  then -10
+}
+
+
+// Ему хотелось душу из нее вытрясти.
+//              ~~~~~~~~~~~
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { существительное:душа{}."из".местоимение:*{} }
+  then -10
+}
+
+
+// Ему просто не приходилось этого делать.
+//                           ^^^^^^^^^^^^
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:делать{}."этого"{падеж:вин} }
+  then -10
+}
+
+
+// Ему хотелось драки, хотелось убить.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { "хотелось".<OBJECT>существительное:*{число:мн падеж:вин} }
+  then -5
+}
+
+// А что со мной могло случиться?
+//   ~~~~~~~~~~~
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { "что".предлог:с{} }
+  then -10
+}
+
+
+// А раньше-то что молчал?
+//             ~~~
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { "молчал".<OBJECT>"что" }
+  then -100
+}
+
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { "молчал".<SUBJECT>"что" }
+  then -100
+}
+
+// А ты с ними по-русски говори.
+tree_scorer ВалентностьГлагола language=Russian
+{
+ if context { rus_verbs:говорить{}.ПРЕДЛОГ:С{}.МЕСТОИМЕНИЕ:*{ПАДЕЖ:ТВОР} }
+  then 1
+}
+
 
 
 // ----------------------------------------------------------------

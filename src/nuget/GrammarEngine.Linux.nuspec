@@ -17,12 +17,6 @@
     </metadata>
     <files>
         <file src="../../bin/linux/grammar_engine/release/x64/solarix_grammar_engine.so" target="contentFiles/any/any/Resources" />
-        <file src="../../bin/linux/grammar_engine/release/x64/libboost_regex.so.1.58.0" target="contentFiles/any/any/Resources" />
-        <file src="../../bin/linux/grammar_engine/release/x64/libboost_system.so.1.58.0" target="contentFiles/any/any/Resources" />
-        <file src="../../bin/linux/grammar_engine/release/x64/libboost_thread.so.1.58.0" target="contentFiles/any/any/Resources" />
-        <file src="../../bin/linux/grammar_engine/release/x64/libcrfsuite-0.12.so" target="contentFiles/any/any/Resources" />
-        <file src="../../bin/linux/grammar_engine/release/x64/liblbfgs-1.10.so" target="contentFiles/any/any/Resources" />
-        <file src="../../bin/linux/grammar_engine/release/x64/libsqlite3.so.0" target="contentFiles/any/any/Resources" />
         <file src="../../bin/linux/compiler/release/x64/compiler" target="contentFiles/any/any/Resources/compiler" />
         <file src="ResourceNamesLinux.cs.pp" target="contentFiles\any\any\Properties" />
     </files>

@@ -22,7 +22,6 @@
         <file src="..\..\bin\windows\GrammarEngine\x64\Release\boost_regex-vc141-mt-x64-1_70.dll" target="contentFiles\any\any\Resources" />
         <!-- <file src="..\..\bin\windows\GrammarEngine\x64\Release\boost_system-vc141-mt-x64-1_70.dll" target="contentFiles\any\any\Resources" /> -->
         <file src="..\..\bin\windows\GrammarEngine\x64\Release\compiler.exe" target="contentFiles\any\any\Resources" />
-        <file src="ResourceAccessor.cs.pp" target="contentFiles\any\any\Properties" />
         <file src="ResourceNamesWindows.cs.pp" target="contentFiles\any\any\Properties" />
     </files>
 </package>

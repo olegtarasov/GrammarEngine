@@ -1,6 +1,6 @@
 name: Build_Linux
 
-on: [push]
+#on: [push]
 
 jobs:
   build:

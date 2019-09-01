@@ -206,9 +206,9 @@ lem::Process::ThreadID Thread::GetCurrentID(void)
 }
 
 
-int Thread::Id2Int(ThreadID id)
+long Thread::Id2Int(ThreadID id)
 {
-    return (int)id;
+    return (long)id;
 }
 
 #endif

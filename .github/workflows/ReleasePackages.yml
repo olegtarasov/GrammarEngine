@@ -1,0 +1,47 @@
+name: Release NuGet packages
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install CMake and stuff
+      run: |
+        brew update
+        brew install cmake
+        brew install sqlite
+        brew install ncurses
+        brew install boost
+        brew install wget
+    - name: Build dependencies
+      run: |
+        cd ~
+        wget https://github.com/downloads/chokkan/liblbfgs/liblbfgs-1.10.tar.gz
+        tar -xvzf liblbfgs-1.10.tar.gz
+        cd liblbfgs-1.10
+        ./configure
+        make
+        sudo make install
+        
+        cd ~
+        wget https://github.com/downloads/chokkan/crfsuite/crfsuite-0.12.tar.gz
+        tar -xvzf crfsuite-0.12.tar.gz
+        cd crfsuite-0.12
+        ./configure
+        make
+        sudo make install
+    - name: Build shared library and compiler
+      run: |
+        cd src
+        mkdir build
+        cd build
+        cmake ..
+        make
+    # - name: Build dictionary
+    #   run: |
+    #     chmod 766 bin/linux/compiler/release/x64/compiler
+    #     mkdir -p bin/linux/dictionary/x64
+    #     ./bin/linux/compiler/release/x64/compiler -j=2 -optimize -dir=src/dictionary.src -outdir=bin/linux/dictionary/x64 -ldsize=3000000 -save_paradigmas -save_prefix_entry_searcher -save_seeker -save_affixes -save_lemmatizer src/dictionary.src/version-pro src/dictionary.src/dictionary -file=src/dictionary.src/russian-language-only.sol src/dictionary.src/shared-resources src/dictionary.src/russian-lexicon src/dictionary.src/russian-stat src/dictionary.src/common-syntax  src/dictionary.src/russian-syntax src/dictionary.src/russian-thesaurus src/dictionary.src/dictionary-russian src/dictionary.src/common_dictionary_xml
+    #     7z a bin/linux/dictionary/x64/dictionary-linux-x64.zip ./bin/linux/dictionary/x64/*

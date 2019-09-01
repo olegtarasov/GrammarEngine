@@ -162,7 +162,7 @@
    {
     public:
      static ThreadID GetCurrentID(void);
-     static int Id2Int( ThreadID id );
+     static long Id2Int( ThreadID id );
 
     private:
      #if !defined LEM_WXWIDGETS

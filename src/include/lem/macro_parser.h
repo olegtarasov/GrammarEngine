@@ -349,9 +349,9 @@
    void seekp( const BethToken &bt );
    void seekp( const BSourceState &ss );
 
-   friend void Print_Error( const BethToken& t, Macro_Parser& src, bool Warn_Only=false );
-   friend void Print_Error( const BSourceState& s, Macro_Parser& src, bool Warn_Only=false );
-   friend void Print_Error( Macro_Parser& src, bool Warn_Only=false );
+   friend void Print_Error( const BethToken& t, Macro_Parser& src, bool Warn_Only);
+   friend void Print_Error( const BSourceState& s, Macro_Parser& src, bool Warn_Only);
+   friend void Print_Error( Macro_Parser& src, bool Warn_Only);
 
    inline int GetnFile(void) const { return CastSizeToInt(flist.size()); }
 
@@ -393,10 +393,10 @@
      extern void Print_Error( Macro_Parser& src, bool Warn_Only=false );
      extern void Print_Error( Sol_IO &io, const BethToken& t, UTextParser &txtfile, bool Warn_Only=false );
     #else
-     extern void Print_Error( const BethToken& t, Macro_Parser& src, bool Warn_Only );
-     extern void Print_Error( const BSourceState& s, Macro_Parser& src, bool Warn_Only );
-     extern void Print_Error( Macro_Parser& src, bool Warn_Only );
-     extern void Print_Error( Sol_IO &io, const BethToken& t, UTextParser &txtfile, bool Warn_Only );
+     extern void Print_Error( const BethToken& t, Macro_Parser& src, bool Warn_Only = false );
+     extern void Print_Error( const BSourceState& s, Macro_Parser& src, bool Warn_Only = false );
+     extern void Print_Error( Macro_Parser& src, bool Warn_Only = false );
+     extern void Print_Error( Sol_IO &io, const BethToken& t, UTextParser &txtfile, bool Warn_Only = false );
     #endif
 
    } // namespace 'Iridium'

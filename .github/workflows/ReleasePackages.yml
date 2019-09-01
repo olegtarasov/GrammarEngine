@@ -14,6 +14,7 @@ jobs:
         brew install sqlite
         brew install ncurses
         brew install boost
+        brew install boost-python
         brew install wget
     - name: Build dependencies
       run: |
